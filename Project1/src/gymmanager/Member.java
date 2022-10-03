@@ -137,7 +137,7 @@ public class Member implements Comparable<Member> {
     @Override
     public boolean equals(Object obj) {
         if (fname.equalsIgnoreCase(((Member) obj).getFname()) && (lname.equalsIgnoreCase(((Member) obj).getLname()) &&
-                        (dob.equals(((Member) obj).getDob())))) return true;
+                (dob.equals(((Member) obj).getDob())))) return true;
         return false;
     }
 
@@ -146,9 +146,16 @@ public class Member implements Comparable<Member> {
      * @param member Member (M2) to compare to other Member.
      * @return 1 if M1 > M2, 0 if M1 == M2, and -1 if M1 < M2.
      */
+//    @Override
+//    public int compareTo(Member member){
+//        return this.fname.compareTo(member.fname);
+//    }
     @Override
     public int compareTo(Member member){
-        return this.fname.compareTo(member.fname);
+        if (this.lname.compareToIgnoreCase(member.lname) == 0) {
+            return this.fname.compareToIgnoreCase(member.fname);
+        } else return this.lname.compareToIgnoreCase(member.lname);
+        //return this.fname.compareTo(member.fname);
     }
 
     /**
@@ -156,6 +163,32 @@ public class Member implements Comparable<Member> {
      * @param args input used for testing Member class.
      */
     public static void main(String[] args) {
+
+        //Test case 1
+        Member m1 = new Member();
+        m1.setFname("John");
+        m1.setLname("Doe");
+
+        Member m2 = new Member();
+        m2.setFname("John");
+        m2.setLname("Doe");
+
+        System.out.println("Test 1");
+        System.out.println("Expected result: 0");
+        System.out.println(m1.compareTo(m2));
+
+        //Test case 2
+        m1.setFname("John");
+        m2.setLname("Doe");
+
+        m1.setFname("john");
+        m2.setLname("doe");
+
+        System.out.println("\nTest 2");
+        System.out.println("Expected result: 0");
+        System.out.println(m1.compareTo(m2));
+
+        /*
         Member m = new Member();
         m.setFname("April");
         m.setLname("March");
@@ -181,5 +214,6 @@ public class Member implements Comparable<Member> {
         Date dob = new Date("3/31/1990");
         m.setDob(dob);
         if (m.dob.isValid()) System.out.println("Valid");
+         */
     }
 }

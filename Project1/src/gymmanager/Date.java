@@ -64,7 +64,10 @@ public class Date implements Comparable<Date> {
      */
     private boolean isLeapYear() {
         if (year % DateConstants.QUADRENNIAL == 0 && year % DateConstants.CENTENNIAL == 0 &&
-                year % DateConstants.QUATERCENTENNIAL == 0) return true;
+                year % DateConstants.QUATERCENTENNIAL == 0) {
+            return true;
+        } else if (year % DateConstants.QUADRENNIAL == 0 && year % DateConstants.CENTENNIAL != 0) return true;
+
         return false;
     }
 
@@ -109,18 +112,18 @@ public class Date implements Comparable<Date> {
                 || (month == DateConstants.OCT) || (month == DateConstants.DEC)) {
             if (day <= DateConstants.MAX_DAYS_1)
                 return true;
-        // Months that have 30 days
+            // Months that have 30 days
         } else if ((month == DateConstants.APR) || (month == DateConstants.JUN) ||
                 (month == DateConstants.SEP) || (month == DateConstants.NOV)) {
             if (day <= DateConstants.MAX_DAYS_2)
                 return true;
-        // February case
+            // February case
         } else if (month == DateConstants.FEB) {
             if (isLeapYear())
                 if (day <= DateConstants.MAX_DAYS_LEAP)
                     return true;
-            else if (day <= DateConstants.MAX_DAYS_NO_LEAP)
-                return true;
+                else if (day <= DateConstants.MAX_DAYS_NO_LEAP)
+                    return true;
         }
         return false;
     }
@@ -177,54 +180,107 @@ public class Date implements Comparable<Date> {
      */
     public static void main(String[] args) {
         Calendar c = Calendar.getInstance();
-        System.out.println((c.get(Calendar.YEAR)));
-        System.out.println((c.get(Calendar.MONTH) + 1));
-        System.out.println((c.get(Calendar.DATE)));
-        Date d = new Date();
-        Date dd = new Date("3/31/1990");
-        Date ddd = new Date("3/31/1990");
-        Date yesterday = new Date("9/21/2022");
-        Date today = new Date();
-        Date today2 = new Date();
-        Date future = new Date("12/2/2022");
 
-        System.out.println("-Add dates-");
-        System.out.println("Date added: " + d.month + "/" + d.day + "/" + d.year);
-        System.out.println("Date added: " + dd.month + "/" + dd.day + "/" + dd.year);
-        System.out.println("Date added: " + ddd.month + "/" + ddd.day + "/" + ddd.year);
+        //Test case 1
+        Date d1 = new Date("2/29/2018");
+        System.out.println("Test 1");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d1.isValid());
 
-        System.out.println("\n-Comparing dates-");
-        System.out.println("Expected result: 1");
-        System.out.println("Obtained result: " + d.compareTo(dd));
-        System.out.println("Expected result: 0");
-        System.out.println("Obtained result: " + dd.compareTo(ddd));
-        System.out.println("Expected result: 0");
-        System.out.println("Obtained result: " + today.compareTo(today2));
-        System.out.println("Expected result: 1");
-        System.out.println("Obtained result: " + today.compareTo(yesterday));
-        System.out.println("Expected result: -1");
-        System.out.println("Obtained result: " + today.compareTo(future));
+        //Test case 2
+        Date d2 = new Date("2/29/2020");
+        System.out.println("\nTest 2");
+        System.out.println("Expected output: true");
+        System.out.println("Obtained output: " + d2.isValid());
 
-        System.out.println("\n-Check for valid dates-");
-        Date dates[] = new Date[8];
-        dates[0] = new Date("2/29/2003");
-        dates[1] = new Date("4/31/2003");
-        dates[2] = new Date("13/31/2003");
-        dates[3] = new Date("3/32/2003");
-        dates[4] = new Date("-1/31/2003");
-        dates[5] = new Date("4/31/2022");
-        dates[6] = new Date("2/30/2011");
-        dates[7] = new Date("4/3/2003");
-        for (Date da : dates)
-            if (da.isValid()) System.out.println(da + ": Valid date");
-            else System.out.println(da + ": Invalid date");
+        //Test case 3
+        Date d3 = new Date("0/1/2022");
+        System.out.println("\nTest 3");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d3.isValid());
 
-        System.out.println("\n-Check for valid DOB-");
-        System.out.println("Expected result: true");
-        System.out.println("Obtained result: " + yesterday.isValidDob());
-        System.out.println("Expected result: true");
-        System.out.println("Obtained result: " + today.isValidDob());
-        System.out.println("Expected result: false");
-        System.out.println("Expected result: " + future.isValidDob());
+        //Test case 4
+        Date d4 = new Date("-1/1/2022");
+        System.out.println("\nTest 4");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d4.isValid());
+
+        //Test case 5
+        Date d5 = new Date("13/1/2022");
+        System.out.println("\nTest 5");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d5.isValid());
+
+        //Test case 6
+        Date d6 = new Date("1/0/2022");
+        System.out.println("\nTest 6");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d6.isValid());
+
+        //Test case 7
+        Date d7 = new Date("1/32/2022");
+        System.out.println("\nTest 7");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d7.isValid());
+
+        //Test case 8
+        Date d8 = new Date("3/32/2022");
+        System.out.println("\nTest 8");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d8.isValid());
+
+        //Test case 9
+        Date d9 = new Date("4/32/2022");
+        System.out.println("\nTest 9");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d9.isValid());
+
+        //Test case 10
+        Date d10 = new Date("7/32/2022");
+        System.out.println("\nTest 10");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d10.isValid());
+
+        //Test case 11
+        Date d11 = new Date("8/32/2022");
+        System.out.println("\nTest 11");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d11.isValid());
+
+        //Test case 12
+        Date d12 = new Date("10/32/2022");
+        System.out.println("\nTest 12");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d12.isValid());
+
+        //Test case 13
+        Date d13 = new Date("12/32/2022");
+        System.out.println("\nTest 13");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d13.isValid());
+
+        //Test case 14
+        Date d14 = new Date("4/31/2022");
+        System.out.println("\nTest 14");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d14.isValid());
+
+        //Test case 15
+        Date d15 = new Date("6/31/2022");
+        System.out.println("\nTest 15");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d15.isValid());
+
+        //Test case 16
+        Date d16 = new Date("9/31/2022");
+        System.out.println("\nTest 16");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d16.isValid());
+
+        //Test case 17
+        Date d17 = new Date("11/31/2022");
+        System.out.println("\nTest 17");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + d17.isValid());
     }
 }
