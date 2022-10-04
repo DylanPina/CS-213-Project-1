@@ -190,11 +190,11 @@ public class Member implements Comparable<Member> {
 
         // Test case 4
         m1.setFname("April");
-        m1.setFname("March");
+        m1.setLname("March");
         m2.setFname("Bill");
         m2.setLname("Scanlan");
         System.out.println("\nTest 4");
-        System.out.println("Expected output: -15");
+        System.out.println("Expected output: -6");
         System.out.println("Obtained output: " + m1.compareTo(m2));
 
         // Test case 5
@@ -225,21 +225,39 @@ public class Member implements Comparable<Member> {
         System.out.println("Obtained output: " + m1.compareTo(m2));
 
         // Test case 8
-        m1.setFname("Dylan");
-        m1.setLname("Pina");
-        m2.setFname("Dylan");
-        m2.setLname("Qina");
+        m1.setFname("Mary");
+        m1.setLname("Lindsey");
+        m2.setFname("Duke");
+        m2.setLname("Ellington");
         System.out.println("\nTest 8");
-        System.out.println("Expected output: -1");
+        System.out.println("Expected output: 7");
         System.out.println("Obtained output: " + m1.compareTo(m2));
 
         // Test case 9
-        m1.setFname("Dylan");
-        m1.setLname("Qina");
-        m2.setFname("Dylan");
-        m2.setLname("Pina");
+        m1.setFname("Duke");
+        m1.setLname("Ellington");
+        m2.setFname("Mary");
+        m2.setLname("Lindsey");
         System.out.println("\nTest 9");
-        System.out.println("Expected output: 1");
+        System.out.println("Expected output: -7");
+        System.out.println("Obtained output: " + m1.compareTo(m2));
+
+        // Test case 10
+        m1.setFname("Kate");
+        m1.setLname("Lindsey");
+        m2.setFname("Mary");
+        m2.setLname("Lindsey");
+        System.out.println("\nTest 10");
+        System.out.println("Expected output: -2");
+        System.out.println("Obtained output: " + m1.compareTo(m2));
+
+        // Test case 11
+        m1.setFname("Mary");
+        m1.setLname("Lindsey");
+        m2.setFname("Kate");
+        m2.setLname("Lindsey");
+        System.out.println("\nTest 11");
+        System.out.println("Expected output: 2");
         System.out.println("Obtained output: " + m1.compareTo(m2));
     }
 }
