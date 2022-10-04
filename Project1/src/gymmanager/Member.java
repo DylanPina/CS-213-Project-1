@@ -225,39 +225,21 @@ public class Member implements Comparable<Member> {
         System.out.println("Obtained output: " + m1.compareTo(m2));
 
         // Test case 8
-        m1.setFname("Mary");
-        m1.setLname("Lindsey");
-        m2.setFname("Duke");
-        m2.setLname("Ellington");
+        m1.setFname("John");
+        m1.setLname("Doe");
+        m2.setFname("John");
+        m2.setLname("Coe");
         System.out.println("\nTest 8");
-        System.out.println("Expected output: 7");
+        System.out.println("Expected output: 1");
         System.out.println("Obtained output: " + m1.compareTo(m2));
 
         // Test case 9
-        m1.setFname("Duke");
-        m1.setLname("Ellington");
-        m2.setFname("Mary");
-        m2.setLname("Lindsey");
+        m1.setFname("John");
+        m1.setLname("Coe");
+        m2.setFname("John");
+        m2.setLname("Doe");
         System.out.println("\nTest 9");
-        System.out.println("Expected output: -7");
-        System.out.println("Obtained output: " + m1.compareTo(m2));
-
-        // Test case 10
-        m1.setFname("Kate");
-        m1.setLname("Lindsey");
-        m2.setFname("Mary");
-        m2.setLname("Lindsey");
-        System.out.println("\nTest 10");
-        System.out.println("Expected output: -2");
-        System.out.println("Obtained output: " + m1.compareTo(m2));
-
-        // Test case 11
-        m1.setFname("Mary");
-        m1.setLname("Lindsey");
-        m2.setFname("Kate");
-        m2.setLname("Lindsey");
-        System.out.println("\nTest 11");
-        System.out.println("Expected output: 2");
+        System.out.println("Expected output: -1");
         System.out.println("Obtained output: " + m1.compareTo(m2));
     }
 }
