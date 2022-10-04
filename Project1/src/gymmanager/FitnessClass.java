@@ -1,5 +1,4 @@
 package gymmanager;
-
 /**
  * Used to create new Fitness Class objects that hold the name of the class and instructor, time, list of participants,
  * and the size of the class.

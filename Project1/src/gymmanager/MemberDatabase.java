@@ -1,5 +1,4 @@
 package gymmanager;
-
 /**
  * Creates and maintains a database that holds members and can sort by name, expiration date, or county.
  * @author Aaron Newland, Dylan Pina
@@ -42,7 +41,7 @@ public class MemberDatabase {
     public Member getMemberFromDb(Member member) {
         int memberIndex = find(member);
         if (memberIndex != NOT_FOUND) return mlist[memberIndex];
-        System.out.println(member.getFname() + " " + member.getLname() + " " + member.getDob() + " is not in database.");
+        System.out.println(member.getFname() + " " + member.getLname() + " " + member.getDob() + " is not in the database.");
         return null;
     }
 

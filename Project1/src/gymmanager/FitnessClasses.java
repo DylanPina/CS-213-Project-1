@@ -1,5 +1,4 @@
 package gymmanager;
-
 /**
  * Holds enumeration data for fitness classes: Class name, instructor name, and time.
  * @author Aaron Newland, Dylan Pina

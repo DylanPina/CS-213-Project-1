@@ -1,5 +1,4 @@
 package gymmanager;
-
 /**
  * Used to create new Member objects that hold member information. These objects can then be compared.
  * Holds member name, date of birth, membership expiration date, and their gym location.

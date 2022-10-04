@@ -273,7 +273,7 @@ public class GymManager {
         Date today = new Date();
         if (!db.memberExists(member)) {
             System.out.println(member.getFname() + " " + member.getLname() + " "
-                    + member.getDob() + " is not in database.");
+                    + member.getDob() + " is not in the database.");
             return false;
         }
         Date expDate = db.getMemberFromDb(member).getExpire();

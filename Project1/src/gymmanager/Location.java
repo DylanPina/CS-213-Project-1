@@ -1,5 +1,4 @@
 package gymmanager;
-
 /**
  * Holds enumeration data for the five gym locations.
  * @author Aaron Newland, Dylan Pina
@@ -46,6 +45,6 @@ public enum Location {
      */
     @Override
     public String toString() {
-        return "Location: " + this.name() + ", " + this.zip + ", " + this.county;
+        return "Location: " + name() + ", 0" + zip + ", " + county;
     }
 }

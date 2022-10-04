@@ -1,7 +1,6 @@
 package gymmanager;
 import java.util.Calendar;
 import java.util.StringTokenizer;
-
 /**
  * Used to create new Date objects that can be compared. Used for date of birth and membership expiration date.
  * Contains methods used to test validity of given dates, and to determine if given year is a leap year and if an

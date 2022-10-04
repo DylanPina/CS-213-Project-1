@@ -1,5 +1,4 @@
 package gymmanager;
-
 /**
  * Holds constant values for integers used in calculation of dates.
  * @author Aaron Newland, Dylan Pina
