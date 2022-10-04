@@ -79,7 +79,7 @@ public class GymManager {
     }
 
     /**
-     * Initializes fitness classes: Pilates, Spinning, and Cardio with appropriate instructors.
+     * Initializes fitness classes: Pilates, Spinning, and Cardio.
      */
     private void initFitnessClasses() {
         pilates = new FitnessClass(
