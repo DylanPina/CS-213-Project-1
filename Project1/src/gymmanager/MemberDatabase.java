@@ -196,21 +196,8 @@ public class MemberDatabase {
                 if (mlist[j] == null || mlist[j + 1] == null) continue;
                 Member m1 = mlist[j];
                 Member m2 = mlist[j + 1];
-                String m1Lname = m1.getLname();
-                String m2Lname = m2.getLname();
-
-                if (m1.compareTo(m2) >= 1) {
+                if (m1.compareTo(m2) >= 1)
                     swap(j, j + 1);
-                }
-//                if (m1Lname.compareTo(m2Lname) >= 1) {
-//                    swap(j, j + 1);
-//                } else if (m1Lname.compareTo(m2Lname) == 0) {
-//                    String m1Fname = m1.getFname();
-//                    String m2Fname = m2.getFname();
-//                    if (m1Fname.compareTo(m2Fname) >= 1) {
-//                        swap(j, j + 1);
-//                    }
-//                }
             }
         }
     }

@@ -144,18 +144,13 @@ public class Member implements Comparable<Member> {
     /**
      * Compares two members to each other. M1 and M2.
      * @param member Member (M2) to compare to other Member.
-     * @return 1 if M1 > M2, 0 if M1 == M2, and -1 if M1 < M2.
+     * @return positive int if M1 > M2, 0 if M1 == M2, and negative int if M1 < M2.
      */
-//    @Override
-//    public int compareTo(Member member){
-//        return this.fname.compareTo(member.fname);
-//    }
     @Override
     public int compareTo(Member member){
-        if (this.lname.compareToIgnoreCase(member.lname) == 0) {
-            return this.fname.compareToIgnoreCase(member.fname);
-        } else return this.lname.compareToIgnoreCase(member.lname);
-        //return this.fname.compareTo(member.fname);
+        if (lname.compareToIgnoreCase(member.lname) != 0)
+            return lname.compareToIgnoreCase(member.lname);
+        else return fname.compareToIgnoreCase(member.fname);
     }
 
     /**
@@ -163,57 +158,220 @@ public class Member implements Comparable<Member> {
      * @param args input used for testing Member class.
      */
     public static void main(String[] args) {
-
-        //Test case 1
         Member m1 = new Member();
+        Member m2 = new Member();
+
+        // Test case 1
         m1.setFname("John");
         m1.setLname("Doe");
-
-        Member m2 = new Member();
         m2.setFname("John");
         m2.setLname("Doe");
-
         System.out.println("Test 1");
-        System.out.println("Expected result: 0");
-        System.out.println(m1.compareTo(m2));
+        System.out.println("Expected output: 0");
+        System.out.println("Obtained output: " + m1.compareTo(m2));
 
-        //Test case 2
+        // Test case 2
         m1.setFname("John");
-        m2.setLname("Doe");
-
-        m1.setFname("john");
+        m1.setLname("Doe");
+        m2.setFname("john");
         m2.setLname("doe");
-
         System.out.println("\nTest 2");
-        System.out.println("Expected result: 0");
-        System.out.println(m1.compareTo(m2));
+        System.out.println("Expected output: 0");
+        System.out.println("Obtained output: " + m1.compareTo(m2));
 
-        /*
-        Member m = new Member();
-        m.setFname("April");
-        m.setLname("March");
-        m.setDob(new Date("1/20/2004"));
+        // Test case 3
+        m1.setFname("john");
+        m1.setLname("doe");
+        m2.setFname("John");
+        m2.setLname("Doe");
+        System.out.println("\nTest 3");
+        System.out.println("Expected output: 0");
+        System.out.println("Obtained output: " + m1.compareTo(m2));
 
-        Member n = new Member();
-        n.setFname("April");
-        n.setLname("March");
-        n.setDob(new Date("1/20/2004"));
+        // Test case 4
+        m1.setFname("April");
+        m1.setFname("March");
+        m2.setFname("Bill");
+        m2.setLname("Scanlan");
+        System.out.println("\nTest 4");
+        System.out.println("Expected output: -15");
+        System.out.println("Obtained output: " + m1.compareTo(m2));
 
-        Member o = new Member();
-        o.setFname("March");
-        o.setLname("March");
+        // Test case 5
+        m1.setFname("Bill");
+        m1.setLname("Scanlan");
+        m2.setFname("April");
+        m2.setLname("March");
+        System.out.println("\nTest 5");
+        System.out.println("Expected output: 6");
+        System.out.println("Obtained output: " + m1.compareTo(m2));
 
-        System.out.println("Comparing members: m and n");
-        System.out.println("Expected Result: true");
-        System.out.println("Obtained Result: " + m.equals(n));
+        // Test case 6
+        m1.setFname("John");
+        m1.setLname("Doe");
+        m2.setFname("Jane");
+        m2.setLname("Doe");
+        System.out.println("\nTest 6");
+        System.out.println("Expected output: 14");
+        System.out.println("Obtained output: " + m1.compareTo(m2));
 
-        System.out.println("Comparing members: m and o");
-        System.out.println("Expected Result: false");
-        System.out.println("Obtained Result: " + m.equals(o));
+        // Test case 7
+        m1.setFname("Jane");
+        m1.setLname("Doe");
+        m2.setFname("John");
+        m2.setLname("Doe");
+        System.out.println("\nTest 7");
+        System.out.println("Expected output: -14");
+        System.out.println("Obtained output: " + m1.compareTo(m2));
 
-        Date dob = new Date("3/31/1990");
-        m.setDob(dob);
-        if (m.dob.isValid()) System.out.println("Valid");
-         */
+        // Test case 8
+        m1.setFname("Dylan");
+        m1.setLname("Pina");
+        m2.setFname("Dylan");
+        m2.setLname("Qina");
+        System.out.println("\nTest 8");
+        System.out.println("Expected output: -1");
+        System.out.println("Obtained output: " + m1.compareTo(m2));
+
+        // Test case 9
+        m1.setFname("Dylan");
+        m1.setLname("Qina");
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        System.out.println("\nTest 9");
+        System.out.println("Expected output: 1");
+        System.out.println("Obtained output: " + m1.compareTo(m2));
+
+        // Test case 10
+        m1.setFname("Dylan");
+        m1.setLname("Pina");
+        m1.setDob(new Date("8/24/2001"));
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        m2.setDob(new Date("8/24/2001"));
+        System.out.println("\nTest 10");
+        System.out.println("Expected output: true");
+        System.out.println("Obtained output: " + m1.equals(m2));
+
+        // Test case 11
+        m1.setFname("Dylan");
+        m1.setLname("Pina");
+        m1.setDob(new Date("8/24/2001"));
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        m2.setDob(new Date("8/24/2002"));
+        System.out.println("\nTest 11");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + m1.equals(m2));
+
+        // Test case 12
+        m1.setFname("Dylan");
+        m1.setLname("Pina");
+        m1.setDob(new Date("8/24/2001"));
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        m2.setDob(new Date("8/25/2001"));
+        System.out.println("\nTest 12");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + m1.equals(m2));
+
+        // Test case 13
+        m1.setFname("Dylan");
+        m1.setLname("Pina");
+        m1.setDob(new Date("8/24/2001"));
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        m2.setDob(new Date("8/14/2001"));
+        System.out.println("\nTest 13");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + m1.equals(m2));
+
+        // Test case 14
+        m1.setFname("Dylan");
+        m1.setLname("Pina");
+        m1.setDob(new Date("8/24/2001"));
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        m2.setDob(new Date("7/24/2001"));
+        System.out.println("\nTest 14");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + m1.equals(m2));
+
+        // Test case 15
+        m1.setFname("Dylan");
+        m1.setLname("Pina");
+        m1.setDob(new Date("8/24/2002"));
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        m2.setDob(new Date("8/24/2001"));
+        System.out.println("\nTest 15");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + m1.equals(m2));
+
+        // Test case 16
+        m1.setFname("Dylan");
+        m1.setLname("Pina");
+        m1.setDob(new Date("8/24/3001"));
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        m2.setDob(new Date("8/24/2001"));
+        System.out.println("\nTest 16");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + m1.equals(m2));
+
+        // Test case 17
+        m1.setFname("Dylan");
+        m1.setLname("Pina");
+        m1.setDob(new Date("8/25/2001"));
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        m2.setDob(new Date("8/24/2001"));
+        System.out.println("\nTest 17");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + m1.equals(m2));
+
+        // Test case 18
+        m1.setFname("Dylan");
+        m1.setLname("Pina");
+        m1.setDob(new Date("8/34/2001"));
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        m2.setDob(new Date("8/24/2001"));
+        System.out.println("\nTest 18");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + m1.equals(m2));
+
+        // Test case 19
+        m1.setFname("Dylan");
+        m1.setLname("Pina");
+        m1.setDob(new Date("9/24/2001"));
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        m2.setDob(new Date("8/24/2001"));
+        System.out.println("\nTest 19");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + m1.equals(m2));
+
+        // Test case 20
+        m1.setFname("Dylan");
+        m1.setLname("Pin");
+        m1.setDob(new Date("8/24/2001"));
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        m2.setDob(new Date("8/24/2001"));
+        System.out.println("\nTest 20");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + m1.equals(m2));
+
+        // Test case 20
+        m1.setFname("ylan");
+        m1.setLname("Pina");
+        m1.setDob(new Date("8/24/2001"));
+        m2.setFname("Dylan");
+        m2.setLname("Pina");
+        m2.setDob(new Date("8/24/2001"));
+        System.out.println("\nTest 21");
+        System.out.println("Expected output: false");
+        System.out.println("Obtained output: " + m1.equals(m2));
     }
 }
