@@ -22,16 +22,23 @@ public class Family extends Member implements Comparable<Member> {
         guestPasses = 1;
     }
 
-    @Override
-    public double membershipFee() {
-        return initFee + quarterlyFee;
-    }
-
     public int getGuestPasses() {
         return guestPasses;
     }
 
     public void setGuestPasses(int guestPasses) {
         this.guestPasses = guestPasses;
+    }
+
+    @Override
+    public double membershipFee() {
+        return initFee + quarterlyFee;
+    }
+
+    @Override
+    public String toString() {
+        return getFname() + " " + getLname() + ", DOB: " + getDob().toString() + ", Membership expires "
+                + getExpire().toString() + ", " + getLocation().toString() + ", (Family) Guest-pass remaining: "
+                + getGuestPasses();
     }
 }
