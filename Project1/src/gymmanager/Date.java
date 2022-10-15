@@ -17,9 +17,9 @@ public class Date implements Comparable<Date> {
      */
     public Date() {
         Calendar c = Calendar.getInstance();
-        year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH) + 1;
         day = c.get(Calendar.DATE);
+        year = c.get(Calendar.YEAR);
     }
 
     /**
@@ -31,6 +31,12 @@ public class Date implements Comparable<Date> {
         month = Integer.parseInt(st.nextToken("/"));
         day = Integer.parseInt(st.nextToken("/"));
         year = Integer.parseInt(st.nextToken("/"));
+    }
+
+    public Date(Date date) {
+        month = date.getMonth();
+        day = date.getDay();
+        year = date.getYear();
     }
 
     /**
@@ -55,6 +61,18 @@ public class Date implements Comparable<Date> {
      */
     public int getDay() {
         return day;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 
     /**
@@ -162,6 +180,19 @@ public class Date implements Comparable<Date> {
                 if (today.getDay() < day)
                     return false;
         return true;
+    }
+
+    public Date addThreeMonths() {
+        Date newDate = new Date(this);
+        int newMonth = newDate.getMonth() + 3;
+        int newYear = newDate.getYear();
+        if (newMonth > 12) {
+            newMonth %= 12;
+            newYear++;
+        }
+        newDate.setMonth(newMonth);
+        newDate.setYear(newYear);
+        return newDate;
     }
 
     /**
