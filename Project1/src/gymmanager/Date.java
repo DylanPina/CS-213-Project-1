@@ -195,6 +195,12 @@ public class Date implements Comparable<Date> {
         return newDate;
     }
 
+    public Date addOneYear() {
+        Date newDate = new Date(this);
+        newDate.setYear(newDate.getYear() + 1);
+        return newDate;
+    }
+
     /**
      * Provides a string representation of a Date object.
      * @return String of date object.

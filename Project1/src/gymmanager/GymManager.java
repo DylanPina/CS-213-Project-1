@@ -47,13 +47,12 @@ public class GymManager {
         switch (command) {
             case "A":
                 addMember();
-                //TODO: change expire to 3 months after current date
                 break;
             case "AF":
-                //TODO: add member with family membership to database, with new expire after 3 months
+                addFamily();
                 break;
             case "AP":
-                //TODO: add member with premium membership to database, with new expire after 3 months
+                addPremium();
                 break;
             case "R":
                 removeMember();
@@ -126,24 +125,6 @@ public class GymManager {
             System.out.println("Error.");
             e.printStackTrace();
         }
-
-        /*
-        pilates = new FitnessClass(
-                FitnessClasses.Pilates.name(),
-                FitnessClasses.Pilates.getInstructorName(),
-                Time.PILATES
-        );
-        spinning = new FitnessClass(
-                FitnessClasses.Spinning.name(),
-                FitnessClasses.Spinning.getInstructorName(),
-                Time.SPINNING
-        );
-        cardio = new FitnessClass(
-                FitnessClasses.Cardio.name(),
-                FitnessClasses.Cardio.getInstructorName(),
-                Time.CARDIO
-        );
-        */
     }
 
     /**
@@ -155,11 +136,10 @@ public class GymManager {
         member.setFname(st.nextToken());
         member.setLname(st.nextToken());
         member.setDob(new Date(st.nextToken()));
-        member.setExpire(new Date(st.nextToken()));
         String locationName = st.nextToken();
         Location location = null;
 
-        if (!validBirthDate(member) || !validExpirationDate(member)) return;
+        if (!validBirthDate(member)) return;
 
         switch (locationName.toUpperCase()) {
             case "BRIDGEWATER":
@@ -183,8 +163,107 @@ public class GymManager {
         }
         member.setLocation(location);
 
+        Date today = new Date();
+        Date expirationDate = today.addThreeMonths();
+        if (expirationDate.isValid()) {
+            member.setExpire(expirationDate);
+        } else {
+            System.out.println("Expiration date " + member.getExpire() + ": invalid calendar date!");
+            return;
+        }
+
         if (db.add(member)) System.out.println(member.getFname() + " " + member.getLname() + " added.");
         else System.out.println(member.getFname() + " " + member.getLname() + " is already in the database.");
+    }
+
+    private void addFamily() {
+        Family family = new Family();
+        family.setFname(st.nextToken());
+        family.setLname(st.nextToken());
+        family.setDob(new Date(st.nextToken()));
+        String locationName = st.nextToken();
+        Location location = null;
+
+        if (!validBirthDate(family)) return;
+
+        switch (locationName.toUpperCase()) {
+            case "BRIDGEWATER":
+                location = Location.BRIDGEWATER;
+                break;
+            case "EDISON":
+                location = Location.EDISON;
+                break;
+            case "PISCATAWAY":
+                location = Location.PISCATAWAY;
+                break;
+            case "FRANKLIN":
+                location = Location.FRANKLIN;
+                break;
+            case "SOMERVILLE":
+                location = Location.SOMERVILLE;
+                break;
+            default:
+                System.out.println(locationName + ": invalid location!");
+                return;
+        }
+        family.setLocation(location);
+
+        Date today = new Date();
+        Date expirationDate = today.addThreeMonths();
+        if (expirationDate.isValid()) {
+            family.setExpire(expirationDate);
+        } else {
+            System.out.println("Expiration date " + family.getExpire() + ": invalid calendar date!");
+            return;
+        }
+
+        if (db.add(family)) System.out.println(family.getFname() + " " + family.getLname() + " added.");
+        else System.out.println(family.getFname() + " " + family.getLname() + " is already in the database.");
+    }
+
+    private void addPremium() {
+        Premium premium = new Premium();
+        premium.setFname(st.nextToken());
+        premium.setLname(st.nextToken());
+        premium.setDob(new Date(st.nextToken()));
+        String locationName = st.nextToken();
+        Location location = null;
+
+        if (!validBirthDate(premium)) return;
+
+        switch (locationName.toUpperCase()) {
+            case "BRIDGEWATER":
+                location = Location.BRIDGEWATER;
+                break;
+            case "EDISON":
+                location = Location.EDISON;
+                break;
+            case "PISCATAWAY":
+                location = Location.PISCATAWAY;
+                break;
+            case "FRANKLIN":
+                location = Location.FRANKLIN;
+                break;
+            case "SOMERVILLE":
+                location = Location.SOMERVILLE;
+                break;
+            default:
+                System.out.println(locationName + ": invalid location!");
+                return;
+        }
+        premium.setLocation(location);
+
+        Date today = new Date();
+        Date expirationDate = today.addOneYear();
+        if (expirationDate.isValid()) {
+            premium.setExpire(expirationDate);
+        } else {
+            System.out.println("Expiration date " + premium.getExpire() + ": invalid calendar date!");
+            return;
+        }
+
+        if (db.add(premium)) System.out.println(premium.getFname() + " " + premium.getLname() + " added.");
+        else System.out.println(premium.getFname() + " " + premium.getLname() + " is already in the database.");
     }
 
     /**
