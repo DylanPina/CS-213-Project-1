@@ -5,7 +5,7 @@ public class Family extends Member implements Comparable<Member> {
 
     private final double initFee = 29.99;
     private final double monthlyFee = 59.99;
-    private final double quartlyFee = monthlyFee * 3;
+    private final double quarterlyFee = monthlyFee * 3;
 
     public Family() {
         super();
@@ -24,7 +24,7 @@ public class Family extends Member implements Comparable<Member> {
 
     @Override
     public double membershipFee() {
-        return initFee + quartlyFee;
+        return initFee + quarterlyFee;
     }
 
     public int getGuestPasses() {
