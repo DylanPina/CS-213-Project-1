@@ -1,4 +1,5 @@
 package gymmanager;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.io.File;
@@ -107,8 +108,24 @@ public class GymManager {
      * Initializes fitness classes: Pilates, Spinning, and Cardio.
      */
     private void initFitnessClasses() {
-        File fitnessSchedule = new File("classSchedule.txt");
-        Scanner fitnessScanner = new Scanner(fitnessSchedule);
+        try {
+            File fitnessSchedule = new File("classSchedule.txt");
+            Scanner fitnessScanner = new Scanner(fitnessSchedule);
+
+            while (fitnessScanner.hasNextLine()) {
+                if (fitnessScanner.next().equalsIgnoreCase("pilates")) {
+                    System.out.println(fitnessScanner.nextLine());
+                } else if (fitnessScanner.next().equalsIgnoreCase("spinning")) {
+                    System.out.println(fitnessScanner.nextLine());
+                } else if (fitnessScanner.next().equalsIgnoreCase("cardio")) {
+                    System.out.println(fitnessScanner.nextLine());
+                }
+
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error.");
+            e.printStackTrace();
+        }
 
         /*
         pilates = new FitnessClass(

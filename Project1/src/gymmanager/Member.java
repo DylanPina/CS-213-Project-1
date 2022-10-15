@@ -11,6 +11,10 @@ public class Member implements Comparable<Member> {
     private Date expire;
     private Location location;
 
+    private final double initFee = 29.99;
+    private final double monthlyFee = 39.99;
+    private final double quartlyFee = monthlyFee * 3;
+
     /**
      * Creates new Member object with null values.
      */
@@ -20,6 +24,20 @@ public class Member implements Comparable<Member> {
         dob = null;
         expire = null;
         location = null;
+    }
+
+    /**
+     * Creates new Member object with given values.
+     * @param fname member first name.
+     * @param lname member last name.
+     * @param dob member date of birth.
+     * @param location member gym location.
+     */
+    public Member(String fname, String lname, Date dob, Location location) {
+        this.fname = fname;
+        this.lname = lname;
+        this.dob = dob;
+        this.location = location;
     }
 
     /**
@@ -118,8 +136,9 @@ public class Member implements Comparable<Member> {
         this.expire = expire;
     }
 
-    //TODO: implement membershipFee()
-    //public double membershipFee() { }
+    public double membershipFee() {
+        return initFee + quartlyFee;
+    }
 
     /**
      * Provides a string representation of a Member object.
