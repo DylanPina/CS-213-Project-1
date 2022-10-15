@@ -118,6 +118,9 @@ public class Member implements Comparable<Member> {
         this.expire = expire;
     }
 
+    //TODO: implement membershipFee()
+    //public double membershipFee() { }
+
     /**
      * Provides a string representation of a Member object.
      * @return String of Member object.

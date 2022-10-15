@@ -1,6 +1,7 @@
 package gymmanager;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.io.File;
 /**
  * Main input/output class. Continuously reads input from user, determines command, then executes necessary methods.
  * @author Aaron Newland, Dylan Pina
@@ -17,7 +18,7 @@ public class GymManager {
      */
     public void run() {
         db = new MemberDatabase();
-        initFitnessClasses();
+        //initFitnessClasses();
         System.out.println("Gym Manager running...");
         Scanner s = new Scanner(System.in);
 
@@ -45,6 +46,13 @@ public class GymManager {
         switch (command) {
             case "A":
                 addMember();
+                //TODO: change expire to 3 months after current date
+                break;
+            case "AF":
+                //TODO: add member with family membership to database, with new expire after 3 months
+                break;
+            case "AP":
+                //TODO: add member with premium membership to database, with new expire after 3 months
                 break;
             case "R":
                 removeMember();
@@ -61,17 +69,34 @@ public class GymManager {
             case "PD":
                 db.printByExpirationDate();
                 break;
+            case "PF":
+                //TODO: print list of members with the membership fees
+                break;
             case "S":
                 printFitnessClasses();
                 break;
             case "C":
                 checkIn();
                 break;
+            case "CG":
+                //TODO: add family guest check in for fitness class
+                break;
             case "D":
                 checkOut();
                 break;
+            case "DG":
+                //TODO: add family guest check out, keep track of remaining guest passes
+                break;
             case "Q":
                 quitProgram();
+                break;
+            case "LS":
+                initFitnessClasses();
+                //TODO: Load fitness class schedule from file "classSchedule.txt"
+                //TODO: change initFitnessClasses() to do this
+                break;
+            case "LM":
+                //TODO: Load historical member information from file "memberList.txt"
                 break;
             default:
                 System.out.println(command + " is an invalid command!");
@@ -82,6 +107,10 @@ public class GymManager {
      * Initializes fitness classes: Pilates, Spinning, and Cardio.
      */
     private void initFitnessClasses() {
+        File fitnessSchedule = new File("classSchedule.txt");
+        Scanner fitnessScanner = new Scanner(fitnessSchedule);
+
+        /*
         pilates = new FitnessClass(
                 FitnessClasses.Pilates.name(),
                 FitnessClasses.Pilates.getInstructorName(),
@@ -97,6 +126,7 @@ public class GymManager {
                 FitnessClasses.Cardio.getInstructorName(),
                 Time.CARDIO
         );
+        */
     }
 
     /**
