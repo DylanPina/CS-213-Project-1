@@ -70,7 +70,7 @@ public class GymManager {
                 db.printByExpirationDate();
                 break;
             case "PF":
-                //TODO: print list of members with the membership fees
+                db.printWithFees();
                 break;
             case "S":
                 printFitnessClasses();
