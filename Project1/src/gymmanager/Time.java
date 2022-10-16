@@ -4,10 +4,9 @@ package gymmanager;
  * @author Aaron Newland, Dylan Pina
  */
 public enum Time {
-    //TODO: change to morning, afternoon, evening
-    PILATES(9, 30),
-    SPINNING(14, 00),
-    CARDIO(14, 00);
+    MORNING(9, 30),
+    AFTERNOON(14, 00),
+    EVENING(18, 30);
 
     private final int hour;
     private final int minutes;

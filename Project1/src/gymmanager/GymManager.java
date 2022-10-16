@@ -1,5 +1,6 @@
 package gymmanager;
 import java.io.FileNotFoundException;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.io.File;
@@ -14,6 +15,7 @@ public class GymManager {
     FitnessClass pilates;
     FitnessClass spinning;
     FitnessClass cardio;
+    ClassSchedule classes;
 
     /**
      * Creates a new MemberDatabase object, initializes fitness classes, and takes input from user until 'Q' is read.
@@ -131,6 +133,9 @@ public class GymManager {
      * Initializes fitness classes: Pilates, Spinning, and Cardio.
      */
     private void initFitnessClasses() {
+        if (classes == null) {
+            classes = new ClassSchedule();
+        }
         try {
             File fitnessSchedule = new File("classSchedule.txt");
             Scanner fitnessScanner = new Scanner(fitnessSchedule);
@@ -140,8 +145,15 @@ public class GymManager {
                 String[] line = fitnessScanner.nextLine().split(" ");
 
                 for (int i = 0; i < line.length; i++) {
-                    if (line[i].equalsIgnoreCase("pilates")) {
-                        System.out.println("pilates");
+                    if (line[i].equalsIgnoreCase("PILATES")) {
+                        FitnessClass pilates = new FitnessClass("PILATES");
+                        String instructor = line[i + 1];
+                        Time time = findTime(line[i + 2]);
+                        Location location = findLocation(line[i + 3]);
+                        pilates.setInstructorName(instructor);
+                        pilates.setTime(time);
+                        pilates.setLocation(location);
+                        classes.addFitnessClass(pilates);
                         break;
                     } else if (line[i].equalsIgnoreCase("spinning")) {
                         System.out.println("spinning");
@@ -154,6 +166,26 @@ public class GymManager {
             System.out.println("Error.");
             e.printStackTrace();
         }
+    }
+
+    private Time findTime(String timeOfDay) {
+        timeOfDay = timeOfDay.toUpperCase();
+        Time time;
+        switch (timeOfDay) {
+            case "MORNING":
+                time = Time.MORNING;
+                break;
+            case "AFTERNOON":
+                time = Time.AFTERNOON;
+                break;
+            case "EVENING":
+                time = Time.EVENING;
+                break;
+            default:
+                System.out.println("invalid time!");
+                return null;
+        }
+        return time;
     }
 
     /**
@@ -247,10 +279,11 @@ public class GymManager {
      */
     private void printFitnessClasses() {
         System.out.println("\n-Fitness classes-");
-        pilates.printClass();
-        spinning.printClass();
-        cardio.printClass();
-        System.out.println();
+        classes.printClassSchedule();
+//        pilates.printClass();
+//        spinning.printClass();
+//        cardio.printClass();
+//        System.out.println();
     }
 
     /**

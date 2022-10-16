@@ -8,8 +8,34 @@ public class FitnessClass {
     private String className;
     private String instructorName;
     private Time time;
+    private Location location;
     private Member[] participants;
     private int classSize;
+
+    /**
+     * Default constructor for FitnessClass, fills with null values.
+     */
+    public FitnessClass() {
+        this.className = null;
+        this.instructorName = null;
+        this.time = null;
+        this.location = null;
+        this.participants = new Member[100];
+        this.classSize = 0;
+    }
+
+    /**
+     * Creates new FitnessClass object with className value.
+     * @param className name of fitness class.
+     */
+    public FitnessClass(String className) {
+        this.className = className;
+        this.instructorName = null;
+        this.time = null;
+        this.location = null;
+        this.participants = new Member[100];
+        this.classSize = 0;
+    }
 
     /**
      * Creates new FitnessClass object with given values.
@@ -17,10 +43,11 @@ public class FitnessClass {
      * @param instructorName name of instructor teaching fitness class.
      * @param time time that fitness class is being held.
      */
-    public FitnessClass(String className, String instructorName, Time time) {
+    public FitnessClass(String className, String instructorName, Time time, Location location) {
         this.className = className;
         this.instructorName = instructorName;
         this.time = time;
+        this.location = location;
         this.participants = new Member[100];
         this.classSize = 0;
     }
@@ -60,7 +87,7 @@ public class FitnessClass {
      * each class.
      */
     public void printClass() {
-        System.out.println(className + " - " + instructorName + " " + time);
+        System.out.println(className + " - " + instructorName + ", " + time  + ", " + location);
         if (classSize != 0) {
             System.out.println("    ** participants **");
             for (Member m : participants)
@@ -90,5 +117,29 @@ public class FitnessClass {
             if (participants[i] != null && member.equals(participants[i]))
                 return i;
         return -1;
+    }
+
+    public String getInstructorName() {
+        return instructorName;
+    }
+
+    public void setInstructorName(String instructorName) {
+        this.instructorName = instructorName;
+    }
+
+    public Time getTime() {
+        return time;
+    }
+
+    public void setTime(Time time) {
+        this.time = time;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }
