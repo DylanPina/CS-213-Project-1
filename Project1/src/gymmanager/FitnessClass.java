@@ -148,6 +148,18 @@ public class FitnessClass {
         this.location = location;
     }
 
+    public String getClassName() {
+        return className;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (className.equalsIgnoreCase(((FitnessClass) obj).getClassName())
+                && (instructorName.equalsIgnoreCase(((FitnessClass) obj).getInstructorName())
+                && (location.equals(((FitnessClass) obj).getLocation())))) return true;
+        return false;
+    }
+
     /**
      * Prints name of fitness class, name of instructor, time of class, and information for all members registered for
      * each class.

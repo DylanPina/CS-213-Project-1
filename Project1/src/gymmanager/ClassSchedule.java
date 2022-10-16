@@ -15,8 +15,9 @@ public class ClassSchedule {
 
     public FitnessClass getFitnessClass(FitnessClass fitnessClass) {
         for (int i = 0; i < numClasses; i++)
-            if ((classes[i] != null) && (classes[i] == fitnessClass))
+            if ((classes[i] != null) && (classes[i].equals(fitnessClass))){
                 return classes[i];
+            }
         return null;
     }
 
