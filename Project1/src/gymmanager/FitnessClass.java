@@ -169,9 +169,9 @@ public class FitnessClass {
         StringBuilder classStr = new StringBuilder();
         classStr.append(className + " - " + instructorName.toUpperCase() + ", " + time  + ", " + location.name());
         if (classSize != 0) {
-            classStr.append("\n    ** participants **");
+            classStr.append("\n- Participants -");
             for (Member m : participants)
-                if (m != null) classStr.append("\n       " + m);
+                if (m != null) classStr.append("\n   " + m);
         }
         return classStr.toString();
     }

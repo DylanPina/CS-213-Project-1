@@ -351,6 +351,17 @@ public class GymManager {
         if (fitnessClass.participantCheckedIn(memberFromDb)) {
             System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " has already checked in.");
         }
+
+        // checks if member is standard member
+        // if true, checks if class is at registered location
+        if (!((memberFromDb instanceof Family) && (memberFromDb instanceof Premium))) {
+            if (!(memberFromDb.getLocation().equals(fitnessClass.getLocation()))) {
+                System.out.println(memberFromDb.getFname() + " " + memberFromDb.getFname() + "checking in + "
+                    + fitnessClass.getLocation() + " - standard membership location restriction.");
+                return;
+            }
+        }
+
         fitnessClass.checkIn(memberFromDb);
     }
 

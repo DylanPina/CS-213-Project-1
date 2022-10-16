@@ -141,16 +141,6 @@ public class Member implements Comparable<Member> {
     }
 
     /**
-     * Provides a string representation of a Member object.
-     * @return String of Member object.
-     */
-    @Override
-    public String toString() {
-        return fname + " " + lname + ", DOB: " + dob.toString() + ", Membership expires "
-                + expire.toString() + ", " + location.toString();
-    }
-
-    /**
      * Determines if a member is equal to another member. First name, last name, and date of birth are the same.
      * @param obj Member to check if equal to another Member.
      * @return true if Member is equal to other Member, false otherwise.
@@ -172,6 +162,16 @@ public class Member implements Comparable<Member> {
         if (lname.compareToIgnoreCase(member.lname) != 0)
             return lname.compareToIgnoreCase(member.lname);
         else return fname.compareToIgnoreCase(member.fname);
+    }
+
+    /**
+     * Provides a string representation of a Member object.
+     * @return String of Member object.
+     */
+    @Override
+    public String toString() {
+        return fname + " " + lname + ", DOB: " + dob.toString() + ", Membership expires "
+                + expire.toString() + ", " + location.toString();
     }
 
     /**
