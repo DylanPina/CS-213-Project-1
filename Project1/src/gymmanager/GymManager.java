@@ -291,7 +291,57 @@ public class GymManager {
      * time conflicts.
      */
     private void checkIn() {
-//        Member memberInfo = new Member();
+        FitnessClass fitnessClass = getFitnessClass();
+        if (fitnessClass == null) return;
+        Member memberInfo = new Member();
+        memberInfo.setFname(st.nextToken());
+        memberInfo.setLname(st.nextToken());
+        memberInfo.setDob(new Date(st.nextToken()));
+
+        if (!memberInfo.getDob().isValid()) {
+             System.out.println(memberInfo.getDob() + ": invalid date of birth!");
+             return;
+        }
+
+        if (!db.memberExists(memberInfo)) return;
+
+        Member memberFromDb = db.getMemberFromDb(memberInfo);
+
+        if (expirationDateExpired(memberFromDb)) return;
+
+        if (fitnessClass.participantCheckedIn(memberFromDb)) {
+            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " has already checked in.");
+            return;
+        }
+
+        // checks if member is standard member
+        // if true, checks if class is at registered location
+        if (!((memberFromDb instanceof Family) && (memberFromDb instanceof Premium))) {
+            if (!(memberFromDb.getLocation().equals(fitnessClass.getLocation()))) {
+                System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " checking in "
+                    + fitnessClass.getLocation().name() + ", " + fitnessClass.getLocation().getZip() + ", "
+                        + fitnessClass.getLocation().getCounty() + " - standard membership location restriction.");
+                return;
+            }
+        }
+
+        //checks for time conflict in members checking into more than one class
+        for (FitnessClass classes: classes.getClasses()) {
+            if (classes != null) {
+                for (Member members: classes.getParticipants()) {
+                    if (members != null) {
+                        if (classes.getTime().equals(fitnessClass.getTime())) {
+                            System.out.println("Time conflict - " + fitnessClass.printNoParticipants());
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        fitnessClass.checkIn(memberFromDb);
+
+        //        Member memberInfo = new Member();
 //        String fitnessClassName = st.nextToken();
 //        memberInfo.setFname(st.nextToken());
 //        memberInfo.setLname(st.nextToken());
@@ -329,41 +379,6 @@ public class GymManager {
 //                System.out.println(fitnessClassName + " class does not exist.");
 //                break;
 //        }
-
-        FitnessClass fitnessClass = getFitnessClass();
-        if (fitnessClass == null) return;
-        Member memberInfo = new Member();
-        memberInfo.setFname(st.nextToken());
-        memberInfo.setLname(st.nextToken());
-        memberInfo.setDob(new Date(st.nextToken()));
-
-        if (!memberInfo.getDob().isValid()) {
-             System.out.println(memberInfo.getDob() + ": invalid date of birth!");
-             return;
-        }
-
-        if (!db.memberExists(memberInfo)) return;
-
-        Member memberFromDb = db.getMemberFromDb(memberInfo);
-
-        if (expirationDateExpired(memberFromDb)) return;
-
-        if (fitnessClass.participantCheckedIn(memberFromDb)) {
-            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " has already checked in.");
-        }
-
-        // checks if member is standard member
-        // if true, checks if class is at registered location
-        if (!((memberFromDb instanceof Family) && (memberFromDb instanceof Premium))) {
-            if (!(memberFromDb.getLocation().equals(fitnessClass.getLocation()))) {
-                System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " checking in "
-                    + fitnessClass.getLocation().name() + ", " + fitnessClass.getLocation().getZip() + ", "
-                        + fitnessClass.getLocation().getCounty() + " - standard membership location restriction.");
-                return;
-            }
-        }
-
-        fitnessClass.checkIn(memberFromDb);
     }
 
     /**

@@ -21,6 +21,14 @@ public class ClassSchedule {
         return null;
     }
 
+    public FitnessClass[] getClasses() {
+        return classes;
+    }
+
+    public int getNumClasses() {
+        return numClasses;
+    }
+
     public void printClassSchedule() {
         for (FitnessClass fitnessClass : classes)
             if (fitnessClass != null) System.out.println(fitnessClass);

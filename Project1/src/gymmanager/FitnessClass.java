@@ -75,7 +75,8 @@ public class FitnessClass {
      */
     public boolean checkIn(Member member) {
         participants[classSize++] = member;
-        System.out.println(member.getFname() + " " + member.getLname() + " checked in " + className + ".");
+        System.out.println(member.getFname() + " " + member.getLname() + " checked in " + className
+                + " - " + instructorName + ", " + time + ", " + location);
         return true;
     }
 
@@ -152,6 +153,10 @@ public class FitnessClass {
         return className;
     }
 
+    public Member[] getParticipants() {
+        return participants;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (className.equalsIgnoreCase(((FitnessClass) obj).getClassName())
@@ -161,8 +166,18 @@ public class FitnessClass {
     }
 
     /**
-     * Prints name of fitness class, name of instructor, time of class, and information for all members registered for
-     * each class.
+     * Creates string including the class name, instructor name, time, and location.
+     * Does not contain list of participants.
+     * @return string containing class data without participants
+     */
+    public String printNoParticipants() {
+        return className + " - " + instructorName.toUpperCase() + ", " + time  + ", " + location.name();
+    }
+
+    /**
+     * Creates a string containing the name of fitness class, name of instructor, time of class, and information
+     * for all members registered for each class.
+     * @return string containing all class data
      */
     @Override
     public String toString() {
