@@ -75,8 +75,6 @@ public class FitnessClass {
      */
     public boolean checkIn(Member member) {
         participants[classSize++] = member;
-        System.out.println(member.getFname() + " " + member.getLname() + " checked in " + className
-                + " - " + instructorName + ", " + time + ", " + location);
         return true;
     }
 
@@ -98,8 +96,6 @@ public class FitnessClass {
         System.out.println(member.getFname() + " " + member.getLname() + " dropped " + className + ".");
         return true;
     }
-
-
 
     /**
      * Checks if member is checked into class already.
@@ -171,7 +167,8 @@ public class FitnessClass {
      * @return string containing class data without participants
      */
     public String printNoParticipants() {
-        return className + " - " + instructorName.toUpperCase() + ", " + time  + ", " + location.name();
+        return className + " - " + instructorName.toUpperCase() + ", " + time  + ", " + location.name() + ", " +
+                location.getZip() + ", " + location.getCounty();
     }
 
     /**
@@ -184,9 +181,9 @@ public class FitnessClass {
         StringBuilder classStr = new StringBuilder();
         classStr.append(className + " - " + instructorName.toUpperCase() + ", " + time  + ", " + location.name());
         if (classSize != 0) {
-            classStr.append("\n- Participants -");
+            classStr.append("\n- Participants -\n");
             for (Member m : participants)
-                if (m != null) classStr.append("\n   " + m);
+                if (m != null) classStr.append(m + "\n");
         }
         return classStr.toString();
     }

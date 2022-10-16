@@ -32,6 +32,6 @@ public final class Constants {
     public static final int MAX_DAYS_NO_LEAP = 28;
     public static final int MAX_DAYS_LEAP = 29;
     public static final int LEGAL_AGE = 18;
-
     public static final int NOT_FOUND = -1;
+    public static final int DEFAULT_ARRAY_LEN = 10;
 }
