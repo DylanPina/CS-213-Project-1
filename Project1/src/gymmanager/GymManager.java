@@ -17,8 +17,6 @@ public class GymManager {
 //    FitnessClass spinning;
 //    FitnessClass cardio;
 
-
-
     /**
      * Creates a new MemberDatabase object, initializes fitness classes, and takes input from user until 'Q' is read.
      */
@@ -86,7 +84,7 @@ public class GymManager {
                 //TODO: add family guest check in for fitness class
                 break;
             case "D":
-//                checkOut();
+                checkout();
                 break;
             case "DG":
                 //TODO: add family guest check out, keep track of remaining guest passes
@@ -113,17 +111,16 @@ public class GymManager {
         try {
             File memberList = new File("memberList.txt");
             Scanner memberScanner = new Scanner(memberList);
-
+            System.out.println("\n-list of members loaded-");
             while (memberScanner.hasNextLine()) {
                 st = new StringTokenizer(memberScanner.nextLine());
                 addMember('M');
             }
-
+            System.out.println("-end of list-\n");
         } catch (FileNotFoundException e) {
             System.out.println("Error.");
             e.printStackTrace();
         }
-
         oldMemberFlag = false;
     }
 
@@ -170,6 +167,7 @@ public class GymManager {
                     break;
                 }
             }
+            printFitnessClasses();
         } catch (FileNotFoundException e) {
             System.out.println("Error.");
             e.printStackTrace();
@@ -233,8 +231,14 @@ public class GymManager {
             return;
         }
 
-        if (db.add(member)) System.out.println(member.getFname() + " " + member.getLname() + " added.");
-        else System.out.println(member.getFname() + " " + member.getLname() + " is already in the database.");
+        boolean memberAdded = db.add(member);
+        if (!oldMemberFlag && memberAdded)
+            System.out.println(member.getFname() + " " + member.getLname() + " added.");
+        else if (oldMemberFlag && memberAdded)
+            System.out.println(member.getFname() + " " + member.getLname() + " DOB: " + member.getDob() + ", " + "Membership expires " +
+                    member.getExpire() + ", " + member.getLocation());
+        else if (!db.add(member))
+            System.out.println(member.getFname() + " " + member.getLname() + " is already in the database.");
     }
 
     /**
@@ -280,9 +284,13 @@ public class GymManager {
      * Prints out list of fitness classes, instructor name, time, and participants (if any).
      */
     private void printFitnessClasses() {
+        if (classes == null) {
+            System.out.println("Fitness class schedule is empty.");
+            return;
+        }
         System.out.println("\n-Fitness classes loaded-");
-        classes.printClassSchedule();
-        System.out.println("-end of class list-");
+        System.out.print(classes.printClassSchedule());
+        System.out.println("-end of class list-\n");
     }
 
     /**
@@ -350,45 +358,37 @@ public class GymManager {
     /**
      * Checks if member is valid and checked into appropriate fitness class, then drops them from that fitness class.
      */
-//    private void checkOut() {
-//        Member member = new Member();
-//        String fitnessClassName = st.nextToken();
-//        member.setFname(st.nextToken());
-//        member.setLname(st.nextToken());
-//        member.setDob(new Date(st.nextToken()));
-//
-//        if (!validBirthDate(member) ||  !db.validDob(member)) return;
-//
-//        if (!db.memberExists(member)) {
-//            System.out.println(member.getFname() + " " + member.getLname()
-//                    + " is not a participant in " + fitnessClassName + ".");
-//            return;
-//        }
-//
-//        switch (fitnessClassName) {
-//            case "Pilates":
-//                if (!pilates.participantCheckedIn(member))
-//                    System.out.println(member.getFname() + " " + member.getLname()
-//                            + " is not a participant in Pilates.");
-//                else pilates.checkOut(member);
-//                break;
-//            case "Spinning":
-//                if (!spinning.participantCheckedIn(member))
-//                    System.out.println(member.getFname() + " " + member.getLname()
-//                            + " is not a participant in Spinning.");
-//                else spinning.checkOut(member);
-//                break;
-//            case "Cardio":
-//                if (!cardio.participantCheckedIn(member))
-//                    System.out.println(member.getFname() + " " + member.getLname()
-//                            + " is not a participant in Cardio.");
-//                else cardio.checkOut(member);
-//                break;
-//            default:
-//                System.out.println(fitnessClassName + " class does not exist.");
-//                break;
-//        }
-//    }
+    private void checkout() {
+        FitnessClass fitnessClass = getFitnessClass();
+        if (fitnessClass == null) return;
+
+        Member memberInfo = new Member();
+        memberInfo.setFname(st.nextToken());
+        memberInfo.setLname(st.nextToken());
+        memberInfo.setDob(new Date(st.nextToken()));
+
+        if (!memberInfo.getDob().isValid()) {
+            System.out.println(memberInfo.getDob() + ": invalid date of birth!");
+            return;
+        }
+
+        if (!db.memberExists(memberInfo)) {
+            System.out.println(memberInfo.getFname() + " " + memberInfo.getLname() + " " + memberInfo.getDob() +
+                    " is not in the database.");
+            return;
+        }
+
+        Member memberFromDb = db.getMemberFromDb(memberInfo);
+        if (expirationDateExpired(memberFromDb)) return;
+
+        if (!fitnessClass.participantCheckedIn(memberFromDb)) {
+            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " did not check in.");
+            return;
+        }
+
+        if (fitnessClass.checkout(memberFromDb))
+            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " done with the class.");
+    }
 
     /**
      * Checks that expiration date is a valid calendar date.

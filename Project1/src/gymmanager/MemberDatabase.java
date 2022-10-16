@@ -124,6 +124,10 @@ public class MemberDatabase {
      * Print list of members with their membership fees
      */
     public void printWithFees() {
+        if (memberDbEmpty()) {
+            System.out.println("Member database is empty!");
+            return;
+        }
         System.out.println("\n-list of members with membership fees-");
         for (Member m : mlist)
             if (m != null) System.out.println(m + ", Membership fee: $" + m.membershipFee());

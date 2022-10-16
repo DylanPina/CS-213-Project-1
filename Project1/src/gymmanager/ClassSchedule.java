@@ -29,8 +29,11 @@ public class ClassSchedule {
         return numClasses;
     }
 
-    public void printClassSchedule() {
+    public String printClassSchedule() {
+        if (classes == null) return "Fitness class schedule is empty.";
+        StringBuilder classSchedule = new StringBuilder();
         for (FitnessClass fitnessClass : classes)
-            if (fitnessClass != null) System.out.println(fitnessClass);
+            if (fitnessClass != null) classSchedule.append(fitnessClass + "\n");
+        return classSchedule.toString();
     }
 }

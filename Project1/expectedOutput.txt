@@ -1,4 +1,3 @@
-
 Gym Manager running...
 
 a is an invalid command!

@@ -1,4 +1,3 @@
-
 a
 p
 pc
@@ -127,4 +126,3 @@ PF
 
 q
 Q
-This line is garbage to test the Q command.

@@ -83,7 +83,7 @@ public class FitnessClass {
      * @param member member dropping from class.
      * @return true if member drops class.
      */
-    public boolean checkOut(Member member) {
+    public boolean checkout(Member member) {
         int participantIndex = getParticipantIndex(member);
         if (participantIndex == -1) return false;
 
@@ -93,7 +93,6 @@ public class FitnessClass {
             else newList[i] = participants[i];
         participants = newList;
 
-        System.out.println(member.getFname() + " " + member.getLname() + " dropped " + className + ".");
         return true;
     }
 
@@ -183,7 +182,7 @@ public class FitnessClass {
         if (classSize != 0) {
             classStr.append("\n- Participants -\n");
             for (Member m : participants)
-                if (m != null) classStr.append(m + "\n");
+                if (m != null) classStr.append("   " + m + "\n");
         }
         return classStr.toString();
     }
