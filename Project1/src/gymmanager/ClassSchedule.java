@@ -14,6 +14,7 @@ public class ClassSchedule {
     }
 
     public void printClassSchedule() {
-        for (FitnessClass fitnessClass : classes) System.out.println(fitnessClass);
+        for (FitnessClass fitnessClass : classes)
+            if (fitnessClass != null) System.out.println(fitnessClass);
     }
 }

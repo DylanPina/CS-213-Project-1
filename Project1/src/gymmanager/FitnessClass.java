@@ -82,18 +82,7 @@ public class FitnessClass {
         return true;
     }
 
-    /**
-     * Prints name of fitness class, name of instructor, time of class, and information for all members registered for
-     * each class.
-     */
-    public void printClass() {
-        System.out.println(className + " - " + instructorName + ", " + time  + ", " + location);
-        if (classSize != 0) {
-            System.out.println("    ** participants **");
-            for (Member m : participants)
-                if (m != null) System.out.println("       " + m);
-        }
-    }
+
 
     /**
      * Checks if member is checked into class already.
@@ -141,5 +130,21 @@ public class FitnessClass {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    /**
+     * Prints name of fitness class, name of instructor, time of class, and information for all members registered for
+     * each class.
+     */
+    @Override
+    public String toString() {
+        StringBuilder classStr = new StringBuilder();
+        classStr.append(className + " - " + instructorName.toUpperCase() + ", " + time  + ", " + location.name());
+        if (classSize != 0) {
+            classStr.append("\n    ** participants **");
+            for (Member m : participants)
+                if (m != null) classStr.append("\n       " + m);
+        }
+        return classStr.toString();
     }
 }

@@ -22,7 +22,6 @@ public class GymManager {
      */
     public void run() {
         db = new MemberDatabase();
-        //initFitnessClasses();
         System.out.println("Gym Manager running...");
         Scanner s = new Scanner(System.in);
 
@@ -95,8 +94,6 @@ public class GymManager {
                 break;
             case "LS":
                 initFitnessClasses();
-                //TODO: Load fitness class schedule from file "classSchedule.txt"
-                //TODO: change initFitnessClasses() to do this
                 break;
             case "LM":
                 loadMemberData();
@@ -133,33 +130,39 @@ public class GymManager {
      * Initializes fitness classes: Pilates, Spinning, and Cardio.
      */
     private void initFitnessClasses() {
-        if (classes == null) {
-            classes = new ClassSchedule();
-        }
+        if (classes == null) classes = new ClassSchedule();
         try {
             File fitnessSchedule = new File("classSchedule.txt");
             Scanner fitnessScanner = new Scanner(fitnessSchedule);
-
             while (fitnessScanner.hasNextLine()) {
-
                 String[] line = fitnessScanner.nextLine().split(" ");
-
-                for (int i = 0; i < line.length; i++) {
-                    if (line[i].equalsIgnoreCase("PILATES")) {
-                        FitnessClass pilates = new FitnessClass("PILATES");
-                        String instructor = line[i + 1];
-                        Time time = findTime(line[i + 2]);
-                        Location location = findLocation(line[i + 3]);
-                        pilates.setInstructorName(instructor);
-                        pilates.setTime(time);
-                        pilates.setLocation(location);
-                        classes.addFitnessClass(pilates);
-                        break;
-                    } else if (line[i].equalsIgnoreCase("spinning")) {
-                        System.out.println("spinning");
-                    } else if (line[i].equalsIgnoreCase("cardio")) {
-                        System.out.println("cardio");
+                for (int i = 0; i < line.length - 1; i++) {
+                    String instructor;
+                    Time time;
+                    Location location;
+                    FitnessClass fitnessClass;
+                    switch (line[i].toUpperCase()) {
+                        case "PILATES":
+                            fitnessClass = new FitnessClass("PILATES");
+                            break;
+                        case "SPINNING":
+                            fitnessClass = new FitnessClass("SPINNING");
+                            break;
+                        case "CARDIO":
+                            fitnessClass = new FitnessClass("CARDIO");
+                            break;
+                        default:
+                            System.out.println(line[i] + ": invalid fitness class!");
+                            return;
                     }
+                    instructor = line[i + 1];
+                    time = findTime(line[i + 2]);
+                    location = findLocation(line[i + 3]);
+                    fitnessClass.setInstructorName(instructor);
+                    fitnessClass.setTime(time);
+                    fitnessClass.setLocation(location);
+                    classes.addFitnessClass(fitnessClass);
+                    break;
                 }
             }
         } catch (FileNotFoundException e) {
@@ -278,12 +281,9 @@ public class GymManager {
      * Prints out list of fitness classes, instructor name, time, and participants (if any).
      */
     private void printFitnessClasses() {
-        System.out.println("\n-Fitness classes-");
+        System.out.println("\n-Fitness classes loaded-");
         classes.printClassSchedule();
-//        pilates.printClass();
-//        spinning.printClass();
-//        cardio.printClass();
-//        System.out.println();
+        System.out.println("-end of class list-");
     }
 
     /**
