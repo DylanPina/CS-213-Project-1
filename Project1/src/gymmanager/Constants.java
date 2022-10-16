@@ -3,12 +3,12 @@ package gymmanager;
  * Holds constant values for integers used in calculation of dates.
  * @author Aaron Newland, Dylan Pina
  */
-public final class DateConstants {
+public final class Constants {
 
     /**
      * Constructor that creates new DateConstants object.
      */
-    private DateConstants() {
+    private Constants() {
         // do nothing
     }
 
@@ -32,4 +32,6 @@ public final class DateConstants {
     public static final int MAX_DAYS_NO_LEAP = 28;
     public static final int MAX_DAYS_LEAP = 29;
     public static final int LEGAL_AGE = 18;
+
+    public static final int NOT_FOUND = -1;
 }

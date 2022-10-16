@@ -80,10 +80,10 @@ public class Date implements Comparable<Date> {
      * @return true if it is a leap year, false otherwise.
      */
     private boolean isLeapYear() {
-        if (year % DateConstants.QUADRENNIAL == 0 && year % DateConstants.CENTENNIAL == 0 &&
-                year % DateConstants.QUATERCENTENNIAL == 0) {
+        if (year % Constants.QUADRENNIAL == 0 && year % Constants.CENTENNIAL == 0 &&
+                year % Constants.QUATERCENTENNIAL == 0) {
             return true;
-        } else if (year % DateConstants.QUADRENNIAL == 0 && year % DateConstants.CENTENNIAL != 0) return true;
+        } else if (year % Constants.QUADRENNIAL == 0 && year % Constants.CENTENNIAL != 0) return true;
 
         return false;
     }
@@ -124,22 +124,22 @@ public class Date implements Comparable<Date> {
     public boolean isValid() {
         if (day < 1) return false;
         // Months that have 31 days
-        if ((month == DateConstants.JAN) || (month == DateConstants.MAR) || (month == DateConstants.MAY)
-                || (month == DateConstants.JUL) || (month == DateConstants.AUG)
-                || (month == DateConstants.OCT) || (month == DateConstants.DEC)) {
-            if (day <= DateConstants.MAX_DAYS_1)
+        if ((month == Constants.JAN) || (month == Constants.MAR) || (month == Constants.MAY)
+                || (month == Constants.JUL) || (month == Constants.AUG)
+                || (month == Constants.OCT) || (month == Constants.DEC)) {
+            if (day <= Constants.MAX_DAYS_1)
                 return true;
             // Months that have 30 days
-        } else if ((month == DateConstants.APR) || (month == DateConstants.JUN) ||
-                (month == DateConstants.SEP) || (month == DateConstants.NOV)) {
-            if (day <= DateConstants.MAX_DAYS_2)
+        } else if ((month == Constants.APR) || (month == Constants.JUN) ||
+                (month == Constants.SEP) || (month == Constants.NOV)) {
+            if (day <= Constants.MAX_DAYS_2)
                 return true;
             // February case
-        } else if (month == DateConstants.FEB) {
+        } else if (month == Constants.FEB) {
             if (isLeapYear()) {
-                if (day <= DateConstants.MAX_DAYS_LEAP)
+                if (day <= Constants.MAX_DAYS_LEAP)
                     return true;
-            } else if (day <= DateConstants.MAX_DAYS_NO_LEAP)
+            } else if (day <= Constants.MAX_DAYS_NO_LEAP)
                 return true;
         }
         return false;
@@ -155,9 +155,9 @@ public class Date implements Comparable<Date> {
         int currMonth = c.get(Calendar.MONTH) + 1;
         int currDay = c.get(Calendar.DATE);
 
-        if (currYear - year > DateConstants.LEGAL_AGE)
+        if (currYear - year > Constants.LEGAL_AGE)
             return true;
-        if (currYear - year == DateConstants.LEGAL_AGE)
+        if (currYear - year == Constants.LEGAL_AGE)
             if (currMonth > month)
                 return true;
             else if (currMonth == month)

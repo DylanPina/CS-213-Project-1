@@ -17,6 +17,7 @@ public class GymManager {
     FitnessClass cardio;
     ClassSchedule classes;
 
+
     /**
      * Creates a new MemberDatabase object, initializes fitness classes, and takes input from user until 'Q' is read.
      */
@@ -98,8 +99,7 @@ public class GymManager {
             case "LM":
                 loadMemberData();
                 break;
-            default:
-                System.out.println(command + " is an invalid command!");
+            default: System.out.println(command + " is an invalid command!");
         }
     }
 
@@ -291,44 +291,67 @@ public class GymManager {
      * time conflicts.
      */
     private void checkIn() {
+//        Member memberInfo = new Member();
+//        String fitnessClassName = st.nextToken();
+//        memberInfo.setFname(st.nextToken());
+//        memberInfo.setLname(st.nextToken());
+//        memberInfo.setDob(new Date(st.nextToken()));
+//
+//        if (!validBirthDate(memberInfo) || expirationDateExpired(memberInfo)
+//                || !db.memberExists(memberInfo) || !db.validDob(memberInfo))
+//            return;
+//
+//        Member member = db.getMemberFromDb(memberInfo);
+//
+//        switch (fitnessClassName.toUpperCase()) {
+//            case "PILATES":
+//                if (pilates.participantCheckedIn(member))
+//                    System.out.println(member.getFname() + " " + member.getLname() + " has already checked in Pilates.");
+//                else pilates.checkIn(member);
+//                break;
+//            case "SPINNING":
+//                if (spinning.participantCheckedIn(member))
+//                    System.out.println(member.getFname() + " " + member.getLname() + " has already checked in Spinning.");
+//                else if (cardio.participantCheckedIn(member))
+//                    System.out.println("Spinning time conflict -- " + member.getFname() + " "
+//                            + member.getLname() + " has already checked in Cardio.");
+//                else spinning.checkIn(member);
+//                break;
+//            case "CARDIO":
+//                if (cardio.participantCheckedIn(member))
+//                    System.out.println(member.getFname() + " " + member.getLname() + " has already checked in Cardio.");
+//                else if (spinning.participantCheckedIn(member))
+//                    System.out.println("Cardio time conflict -- " + member.getFname() + " " + member.getLname()
+//                            + " has already checked in Spinning.");
+//                else cardio.checkIn(member);
+//                break;
+//            default:
+//                System.out.println(fitnessClassName + " class does not exist.");
+//                break;
+//        }
+
+        FitnessClass fitnessClass = getFitnessClass();
+        if (fitnessClass == null) return;
         Member memberInfo = new Member();
-        String fitnessClassName = st.nextToken();
         memberInfo.setFname(st.nextToken());
         memberInfo.setLname(st.nextToken());
         memberInfo.setDob(new Date(st.nextToken()));
 
-        if (!validBirthDate(memberInfo) || expirationDateExpired(memberInfo)
-                || !db.memberExists(memberInfo) || !db.validDob(memberInfo))
-            return;
-
-        Member member = db.getMemberFromDb(memberInfo);
-
-        switch (fitnessClassName.toUpperCase()) {
-            case "PILATES":
-                if (pilates.participantCheckedIn(member))
-                    System.out.println(member.getFname() + " " + member.getLname() + " has already checked in Pilates.");
-                else pilates.checkIn(member);
-                break;
-            case "SPINNING":
-                if (spinning.participantCheckedIn(member))
-                    System.out.println(member.getFname() + " " + member.getLname() + " has already checked in Spinning.");
-                else if (cardio.participantCheckedIn(member))
-                    System.out.println("Spinning time conflict -- " + member.getFname() + " "
-                            + member.getLname() + " has already checked in Cardio.");
-                else spinning.checkIn(member);
-                break;
-            case "CARDIO":
-                if (cardio.participantCheckedIn(member))
-                    System.out.println(member.getFname() + " " + member.getLname() + " has already checked in Cardio.");
-                else if (spinning.participantCheckedIn(member))
-                    System.out.println("Cardio time conflict -- " + member.getFname() + " " + member.getLname()
-                            + " has already checked in Spinning.");
-                else cardio.checkIn(member);
-                break;
-            default:
-                System.out.println(fitnessClassName + " class does not exist.");
-                break;
+        if (!memberInfo.getDob().isValid()) {
+             System.out.println(memberInfo.getDob() + ": invalid date of birth!");
+             return;
         }
+
+        if (!db.memberExists(memberInfo)) return;
+
+        Member memberFromDb = db.getMemberFromDb(memberInfo);
+
+        if (expirationDateExpired(memberFromDb)) return;
+
+        if (fitnessClass.participantCheckedIn(memberFromDb)) {
+            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " has already checked in.");
+        }
+        fitnessClass.checkIn(memberFromDb);
     }
 
     /**
@@ -426,6 +449,16 @@ public class GymManager {
             return false;
         }
         return true;
+    }
+
+    private FitnessClass getFitnessClass() {
+        String fitnessClassName = st.nextToken();
+        String instructor = st.nextToken();
+        Location location = findLocation(st.nextToken());
+        FitnessClass fitnessClass = new FitnessClass(fitnessClassName, instructor, location);
+        fitnessClass = classes.getFitnessClass(fitnessClass);
+        if (fitnessClass == null) System.out.println(fitnessClassName + " - class does not exist.");
+        return fitnessClass;
     }
 
     /**

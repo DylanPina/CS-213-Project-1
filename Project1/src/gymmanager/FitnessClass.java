@@ -41,7 +41,23 @@ public class FitnessClass {
      * Creates new FitnessClass object with given values.
      * @param className name of fitness class.
      * @param instructorName name of instructor teaching fitness class.
-     * @param time time that fitness class is being held.
+     * @param location location of the fitness class.
+     */
+    public FitnessClass(String className, String instructorName, Location location) {
+        this.className = className;
+        this.instructorName = instructorName;
+        this.time = null;
+        this.location = location;
+        this.participants = new Member[100];
+        this.classSize = 0;
+    }
+
+    /**
+     * Creates new FitnessClass object with given values.
+     * @param className name of fitness class.
+     * @param instructorName name of instructor teaching fitness class.
+     * @param time time of the fitness class.
+     * @param location location of the fitness class.
      */
     public FitnessClass(String className, String instructorName, Time time, Location location) {
         this.className = className;

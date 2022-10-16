@@ -13,6 +13,13 @@ public class ClassSchedule {
         classes[numClasses++] = fitnessClass;
     }
 
+    public FitnessClass getFitnessClass(FitnessClass fitnessClass) {
+        for (int i = 0; i < numClasses; i++)
+            if ((classes[i] != null) && (classes[i] == fitnessClass))
+                return classes[i];
+        return null;
+    }
+
     public void printClassSchedule() {
         for (FitnessClass fitnessClass : classes)
             if (fitnessClass != null) System.out.println(fitnessClass);

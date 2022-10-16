@@ -5,7 +5,6 @@ package gymmanager;
  */
 public class MemberDatabase {
     final int INIT_CAP = 4;
-    final int NOT_FOUND = -1;
     private Member[] mlist;
     private int size;
 
@@ -18,7 +17,7 @@ public class MemberDatabase {
         if (!memberDbEmpty())
             for (int i = 0; i < size; i++)
                 if (mlist[i] != null && mlist[i].equals(member)) return i;
-        return NOT_FOUND;
+        return Constants.NOT_FOUND;
     }
 
     /**
@@ -40,7 +39,7 @@ public class MemberDatabase {
      */
     public Member getMemberFromDb(Member member) {
         int memberIndex = find(member);
-        if (memberIndex != NOT_FOUND) return mlist[memberIndex];
+        if (memberIndex != Constants.NOT_FOUND) return mlist[memberIndex];
         System.out.println(member.getFname() + " " + member.getLname() + " " + member.getDob() + " is not in the database.");
         return null;
     }
@@ -91,7 +90,7 @@ public class MemberDatabase {
      */
     public boolean remove(Member member) {
         int memberIndex = find(member);
-        if (memberIndex == NOT_FOUND) return false;
+        if (memberIndex == Constants.NOT_FOUND) return false;
         Member[] newList = new Member[size-- - 1];
         int i = 0;
         for (Member m : mlist)
