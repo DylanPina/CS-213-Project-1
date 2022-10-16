@@ -325,7 +325,8 @@ public class GymManager {
             }
         }
 
-        //checks for time conflict in members checking into more than one class
+        // iterates through ClassSchedule classes
+        // checks for time conflict in members checking into more than one class
         for (FitnessClass classes: classes.getClasses()) {
             if (classes != null) {
                 for (Member members: classes.getParticipants()) {
