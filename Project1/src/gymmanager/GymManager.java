@@ -356,8 +356,9 @@ public class GymManager {
         // if true, checks if class is at registered location
         if (!((memberFromDb instanceof Family) && (memberFromDb instanceof Premium))) {
             if (!(memberFromDb.getLocation().equals(fitnessClass.getLocation()))) {
-                System.out.println(memberFromDb.getFname() + " " + memberFromDb.getFname() + "checking in + "
-                    + fitnessClass.getLocation() + " - standard membership location restriction.");
+                System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " checking in "
+                    + fitnessClass.getLocation().name() + ", " + fitnessClass.getLocation().getZip() + ", "
+                        + fitnessClass.getLocation().getCounty() + " - standard membership location restriction.");
                 return;
             }
         }
