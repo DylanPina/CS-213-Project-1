@@ -136,11 +136,11 @@ public class Date implements Comparable<Date> {
                 return true;
             // February case
         } else if (month == DateConstants.FEB) {
-            if (isLeapYear())
+            if (isLeapYear()) {
                 if (day <= DateConstants.MAX_DAYS_LEAP)
                     return true;
-                else if (day <= DateConstants.MAX_DAYS_NO_LEAP)
-                    return true;
+            } else if (day <= DateConstants.MAX_DAYS_NO_LEAP)
+                return true;
         }
         return false;
     }

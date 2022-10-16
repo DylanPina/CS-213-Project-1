@@ -9,6 +9,7 @@ import java.io.File;
  */
 public class GymManager {
     StringTokenizer st;
+    private boolean oldMemberFlag = false;
     MemberDatabase db;
     FitnessClass pilates;
     FitnessClass spinning;
@@ -46,13 +47,13 @@ public class GymManager {
     private void setCommand(String command) {
         switch (command) {
             case "A":
-                addMember();
+                addMember('M');
                 break;
             case "AF":
-                addFamily();
+                addMember('F');
                 break;
             case "AP":
-                addPremium();
+                addMember('P');
                 break;
             case "R":
                 removeMember();
@@ -96,11 +97,34 @@ public class GymManager {
                 //TODO: change initFitnessClasses() to do this
                 break;
             case "LM":
-                //TODO: Load historical member information from file "memberList.txt"
+                loadMemberData();
                 break;
             default:
                 System.out.println(command + " is an invalid command!");
         }
+    }
+
+    /**
+     * Loads historic member data from text file named "memberList.txt
+     * Sets oldMemberFlag to "true" then to "false" so addMember() doesn't calculate expire date
+     */
+    private void loadMemberData() {
+        oldMemberFlag = true;
+        try {
+            File memberList = new File("memberList.txt");
+            Scanner memberScanner = new Scanner(memberList);
+
+            while (memberScanner.hasNextLine()) {
+                st = new StringTokenizer(memberScanner.nextLine());
+                addMember('M');
+            }
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Error.");
+            e.printStackTrace();
+        }
+
+        oldMemberFlag = false;
     }
 
     /**
@@ -112,14 +136,19 @@ public class GymManager {
             Scanner fitnessScanner = new Scanner(fitnessSchedule);
 
             while (fitnessScanner.hasNextLine()) {
-                if (fitnessScanner.next().equalsIgnoreCase("pilates")) {
-                    System.out.println(fitnessScanner.nextLine());
-                } else if (fitnessScanner.next().equalsIgnoreCase("spinning")) {
-                    System.out.println(fitnessScanner.nextLine());
-                } else if (fitnessScanner.next().equalsIgnoreCase("cardio")) {
-                    System.out.println(fitnessScanner.nextLine());
-                }
 
+                String[] line = fitnessScanner.nextLine().split(" ");
+
+                for (int i = 0; i < line.length; i++) {
+                    if (line[i].equalsIgnoreCase("pilates")) {
+                        System.out.println("pilates");
+                        break;
+                    } else if (line[i].equalsIgnoreCase("spinning")) {
+                        System.out.println("spinning");
+                    } else if (line[i].equalsIgnoreCase("cardio")) {
+                        System.out.println("cardio");
+                    }
+                }
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error.");
@@ -129,45 +158,40 @@ public class GymManager {
 
     /**
      * Continues reading member information from input, then calls for checks to ensure appropriate values for member
-     * fields. Finally, sets values to appropriate member fields.
+     * fields. Determines membership tier (member, family, premium). Finally, sets values to appropriate member fields.
      */
-    private void addMember() {
-        Member member = new Member();
+    private void addMember(char tier) {
+        Member member;
+        switch (tier) {
+            case 'M':
+                member = new Member();
+                break;
+            case 'F':
+                member = new Family();
+                break;
+            case 'P':
+                member = new Premium();
+                break;
+            default:
+                System.out.println(tier + ": invalid membership tier!");
+                return;
+        }
         member.setFname(st.nextToken());
         member.setLname(st.nextToken());
         member.setDob(new Date(st.nextToken()));
+        if (oldMemberFlag) member.setExpire(new Date(st.nextToken()));
         String locationName = st.nextToken();
         Location location = null;
 
         if (!validBirthDate(member)) return;
-
-        switch (locationName.toUpperCase()) {
-            case "BRIDGEWATER":
-                location = Location.BRIDGEWATER;
-                break;
-            case "EDISON":
-                location = Location.EDISON;
-                break;
-            case "PISCATAWAY":
-                location = Location.PISCATAWAY;
-                break;
-            case "FRANKLIN":
-                location = Location.FRANKLIN;
-                break;
-            case "SOMERVILLE":
-                location = Location.SOMERVILLE;
-                break;
-            default:
-                System.out.println(locationName + ": invalid location!");
-                return;
-        }
+        location = findLocation(locationName);
+        if (location == null) return;
         member.setLocation(location);
 
         Date today = new Date();
         Date expirationDate = today.addThreeMonths();
-        if (expirationDate.isValid()) {
-            member.setExpire(expirationDate);
-        } else {
+        if (!oldMemberFlag) member.setExpire(expirationDate);
+        if (!member.getExpire().isValid()) {
             System.out.println("Expiration date " + member.getExpire() + ": invalid calendar date!");
             return;
         }
@@ -176,16 +200,13 @@ public class GymManager {
         else System.out.println(member.getFname() + " " + member.getLname() + " is already in the database.");
     }
 
-    private void addFamily() {
-        Family family = new Family();
-        family.setFname(st.nextToken());
-        family.setLname(st.nextToken());
-        family.setDob(new Date(st.nextToken()));
-        String locationName = st.nextToken();
+    /**
+     * Determines the home location of a new gym member that is being added to the database
+     * @param locationName String of member's gym location that needs to be found
+     * @return Location object of gym members location, returns null Location if location not found
+     */
+    private Location findLocation(String locationName) {
         Location location = null;
-
-        if (!validBirthDate(family)) return;
-
         switch (locationName.toUpperCase()) {
             case "BRIDGEWATER":
                 location = Location.BRIDGEWATER;
@@ -204,66 +225,9 @@ public class GymManager {
                 break;
             default:
                 System.out.println(locationName + ": invalid location!");
-                return;
+                return null;
         }
-        family.setLocation(location);
-
-        Date today = new Date();
-        Date expirationDate = today.addThreeMonths();
-        if (expirationDate.isValid()) {
-            family.setExpire(expirationDate);
-        } else {
-            System.out.println("Expiration date " + family.getExpire() + ": invalid calendar date!");
-            return;
-        }
-
-        if (db.add(family)) System.out.println(family.getFname() + " " + family.getLname() + " added.");
-        else System.out.println(family.getFname() + " " + family.getLname() + " is already in the database.");
-    }
-
-    private void addPremium() {
-        Premium premium = new Premium();
-        premium.setFname(st.nextToken());
-        premium.setLname(st.nextToken());
-        premium.setDob(new Date(st.nextToken()));
-        String locationName = st.nextToken();
-        Location location = null;
-
-        if (!validBirthDate(premium)) return;
-
-        switch (locationName.toUpperCase()) {
-            case "BRIDGEWATER":
-                location = Location.BRIDGEWATER;
-                break;
-            case "EDISON":
-                location = Location.EDISON;
-                break;
-            case "PISCATAWAY":
-                location = Location.PISCATAWAY;
-                break;
-            case "FRANKLIN":
-                location = Location.FRANKLIN;
-                break;
-            case "SOMERVILLE":
-                location = Location.SOMERVILLE;
-                break;
-            default:
-                System.out.println(locationName + ": invalid location!");
-                return;
-        }
-        premium.setLocation(location);
-
-        Date today = new Date();
-        Date expirationDate = today.addOneYear();
-        if (expirationDate.isValid()) {
-            premium.setExpire(expirationDate);
-        } else {
-            System.out.println("Expiration date " + premium.getExpire() + ": invalid calendar date!");
-            return;
-        }
-
-        if (db.add(premium)) System.out.println(premium.getFname() + " " + premium.getLname() + " added.");
-        else System.out.println(premium.getFname() + " " + premium.getLname() + " is already in the database.");
+        return location;
     }
 
     /**
