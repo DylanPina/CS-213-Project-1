@@ -1,4 +1,7 @@
 package gymmanager;
+
+import java.text.DecimalFormat;
+
 /**
  * Holds enumeration data for the five gym locations.
  * @author Aaron Newland, Dylan Pina
@@ -45,6 +48,7 @@ public enum Location {
      */
     @Override
     public String toString() {
-        return "Location: " + name() + ", 0" + zip + ", " + county;
+        DecimalFormat zipCodeFormat = new DecimalFormat("00000");
+        return "Location: " + name() + ", " + zipCodeFormat.format(zip) + ", " + county;
     }
 }

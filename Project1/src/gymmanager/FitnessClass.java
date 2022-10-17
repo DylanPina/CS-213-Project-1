@@ -1,4 +1,7 @@
 package gymmanager;
+
+import java.text.DecimalFormat;
+
 /**
  * Used to create new Fitness Class objects that hold the name of the class and instructor, time, list of participants,
  * and the size of the class.
@@ -203,8 +206,9 @@ public class FitnessClass {
      * @return string containing class data without participants
      */
     public String printNoParticipants() {
+        DecimalFormat zipCodeFormat = new DecimalFormat("00000");
         return className + " - " + instructorName.toUpperCase() + ", " + time  + ", " + location.name() + ", " +
-                location.getZip() + ", " + location.getCounty();
+                zipCodeFormat.format(location.getZip()) + ", " + location.getCounty();
     }
 
     @Override

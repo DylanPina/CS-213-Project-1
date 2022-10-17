@@ -71,8 +71,7 @@ public class GymManager {
                 db.printWithFees();
                 break;
             case "S":
-                System.out.println("-Fitness classes-");
-                printFitnessClasses();
+                printFitnessClasses("-Fitness classes-");
                 break;
             case "C":
                 checkIn();
@@ -164,8 +163,7 @@ public class GymManager {
                     break;
                 }
             }
-            System.out.println("\n-Fitness classes loaded-");
-            printFitnessClasses();
+            printFitnessClasses("\n-Fitness classes loaded-");
         } catch (FileNotFoundException e) {
             System.out.println("Error.");
             e.printStackTrace();
@@ -217,12 +215,16 @@ public class GymManager {
         Location location = null;
 
         if (!validBirthDate(member)) return;
+
         location = findLocation(locationName);
-        if (location == null) return;
+        if (location == null) {
+            System.out.println(locationName + ": invalid location!");
+            return;
+        }
         member.setLocation(location);
 
         Date today = new Date();
-        Date expirationDate = today.addThreeMonths();
+        Date expirationDate = member instanceof Premium ? today.addOneYear() : today.addThreeMonths();
         if (!oldMemberFlag) member.setExpire(expirationDate);
         if (!member.getExpire().isValid()) {
             System.out.println("Expiration date " + member.getExpire() + ": invalid calendar date!");
@@ -281,11 +283,12 @@ public class GymManager {
     /**
      * Prints out list of fitness classes, instructor name, time, and participants (if any).
      */
-    private void printFitnessClasses() {
+    private void printFitnessClasses(String header) {
         if (classes == null) {
             System.out.println("Fitness class schedule is empty.");
             return;
         }
+        System.out.println(header);
         System.out.print(classes.printClassSchedule());
         System.out.println("-end of class list-\n");
     }
@@ -304,7 +307,7 @@ public class GymManager {
         memberInfo.setDob(new Date(st.nextToken()));
 
         if (!memberInfo.getDob().isValid()) {
-             System.out.println(memberInfo.getDob() + ": invalid date of birth!");
+             System.out.println("DOB: " + memberInfo.getDob() + ": invalid calendar date!");
              return;
         }
 
@@ -363,7 +366,7 @@ public class GymManager {
         guestSponsor.setDob(new Date(st.nextToken()));
 
         if (!guestSponsor.getDob().isValid()) {
-            System.out.println(guestSponsor.getDob() + ": invalid date of birth!");
+            System.out.println("DOB: " + guestSponsor.getDob() + ": invalid calendar date!");
             return;
         }
 
@@ -411,7 +414,7 @@ public class GymManager {
         memberInfo.setDob(new Date(st.nextToken()));
 
         if (!memberInfo.getDob().isValid()) {
-            System.out.println(memberInfo.getDob() + ": invalid date of birth!");
+            System.out.println("DOB: " + memberInfo.getDob() + ": invalid calendar date!");
             return;
         }
 
@@ -443,7 +446,7 @@ public class GymManager {
         guestSponsor.setDob(new Date(st.nextToken()));
 
         if (!guestSponsor.getDob().isValid()) {
-            System.out.println(guestSponsor.getDob() + ": invalid date of birth!");
+            System.out.println("DOB: " + guestSponsor.getDob() + ": invalid calendar date!");
             return;
         }
 
@@ -537,7 +540,7 @@ public class GymManager {
         String locationName = st.nextToken();
         Location location = findLocation(locationName);
         if (location == null) {
-            System.out.println(locationName + ": invalid location!");
+            System.out.println(locationName + ": invalid location.");
             return null;
         }
 
