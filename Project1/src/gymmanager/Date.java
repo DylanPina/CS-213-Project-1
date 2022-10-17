@@ -33,6 +33,10 @@ public class Date implements Comparable<Date> {
         year = Integer.parseInt(st.nextToken("/"));
     }
 
+    /**
+     * Creates a new Date object from an existing one.
+     * @param date date to be moved to new object.
+     */
     public Date(Date date) {
         month = date.getMonth();
         day = date.getDay();
@@ -182,6 +186,10 @@ public class Date implements Comparable<Date> {
         return true;
     }
 
+    /**
+     * Modifies date to be three months ahead of current date.
+     * @return date object with date three months from today's date.
+     */
     public Date addThreeMonths() {
         Date newDate = new Date(this);
         int newMonth = newDate.getMonth() + 3;
@@ -195,6 +203,10 @@ public class Date implements Comparable<Date> {
         return newDate;
     }
 
+    /**
+     * Modifies date to be one year ahead of current date.
+     * @return date object with date three months from today's date.
+     */
     public Date addOneYear() {
         Date newDate = new Date(this);
         newDate.setYear(newDate.getYear() + 1);

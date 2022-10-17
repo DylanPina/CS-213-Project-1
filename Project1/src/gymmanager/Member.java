@@ -136,6 +136,10 @@ public class Member implements Comparable<Member> {
         this.expire = expire;
     }
 
+    /**
+     * Calculates membership fee owed by Member.
+     * @return dollar amount of money owed in membership fee.
+     */
     public double membershipFee() {
         return initFee + quartlyFee;
     }
@@ -172,95 +176,5 @@ public class Member implements Comparable<Member> {
     public String toString() {
         return fname + " " + lname + ", DOB: " + dob.toString() + ", Membership expires "
                 + expire.toString() + ", " + location.toString();
-    }
-
-    /**
-     * Testbed main. Used to test Member class in isolation.
-     * @param args input used for testing Member class.
-     */
-    public static void main(String[] args) {
-        Member m1 = new Member();
-        Member m2 = new Member();
-
-        // Test case 1
-        m1.setFname("John");
-        m1.setLname("Doe");
-        m2.setFname("John");
-        m2.setLname("Doe");
-        System.out.println("Test 1");
-        System.out.println("Expected output: 0");
-        System.out.println("Obtained output: " + m1.compareTo(m2));
-
-        // Test case 2
-        m1.setFname("John");
-        m1.setLname("Doe");
-        m2.setFname("john");
-        m2.setLname("doe");
-        System.out.println("\nTest 2");
-        System.out.println("Expected output: 0");
-        System.out.println("Obtained output: " + m1.compareTo(m2));
-
-        // Test case 3
-        m1.setFname("john");
-        m1.setLname("doe");
-        m2.setFname("John");
-        m2.setLname("Doe");
-        System.out.println("\nTest 3");
-        System.out.println("Expected output: 0");
-        System.out.println("Obtained output: " + m1.compareTo(m2));
-
-        // Test case 4
-        m1.setFname("April");
-        m1.setLname("March");
-        m2.setFname("Bill");
-        m2.setLname("Scanlan");
-        System.out.println("\nTest 4");
-        System.out.println("Expected output: -6");
-        System.out.println("Obtained output: " + m1.compareTo(m2));
-
-        // Test case 5
-        m1.setFname("Bill");
-        m1.setLname("Scanlan");
-        m2.setFname("April");
-        m2.setLname("March");
-        System.out.println("\nTest 5");
-        System.out.println("Expected output: 6");
-        System.out.println("Obtained output: " + m1.compareTo(m2));
-
-        // Test case 6
-        m1.setFname("John");
-        m1.setLname("Doe");
-        m2.setFname("Jane");
-        m2.setLname("Doe");
-        System.out.println("\nTest 6");
-        System.out.println("Expected output: 14");
-        System.out.println("Obtained output: " + m1.compareTo(m2));
-
-        // Test case 7
-        m1.setFname("Jane");
-        m1.setLname("Doe");
-        m2.setFname("John");
-        m2.setLname("Doe");
-        System.out.println("\nTest 7");
-        System.out.println("Expected output: -14");
-        System.out.println("Obtained output: " + m1.compareTo(m2));
-
-        // Test case 8
-        m1.setFname("John");
-        m1.setLname("Doe");
-        m2.setFname("John");
-        m2.setLname("Coe");
-        System.out.println("\nTest 8");
-        System.out.println("Expected output: 1");
-        System.out.println("Obtained output: " + m1.compareTo(m2));
-
-        // Test case 9
-        m1.setFname("John");
-        m1.setLname("Coe");
-        m2.setFname("John");
-        m2.setLname("Doe");
-        System.out.println("\nTest 9");
-        System.out.println("Expected output: -1");
-        System.out.println("Obtained output: " + m1.compareTo(m2));
     }
 }

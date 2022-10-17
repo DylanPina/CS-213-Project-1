@@ -121,7 +121,8 @@ public class GymManager {
     }
 
     /**
-     * Initializes fitness classes: Pilates, Spinning, and Cardio.
+     * Initializes fitness classes: Pilates, Spinning, and Cardio by reading class data from text
+     * file "classSchedule.txt".
      */
     private void initFitnessClasses() {
         classes = new ClassSchedule();
@@ -170,6 +171,11 @@ public class GymManager {
         }
     }
 
+    /**
+     * Determines the time by being given a time of day, "MORNING", "AFTERNOON", "EVENING".
+     * @param timeOfDay String representing the time of day.
+     * @return Time object of the time of day based on given string.
+     */
     private Time findTime(String timeOfDay) {
         timeOfDay = timeOfDay.toUpperCase();
         Time time = null;
@@ -235,8 +241,9 @@ public class GymManager {
         if (!oldMemberFlag && memberAdded)
             System.out.println(member.getFname() + " " + member.getLname() + " added.");
         else if (oldMemberFlag && memberAdded)
-            System.out.println(member.getFname() + " " + member.getLname() + " DOB: " + member.getDob() + ", " + "Membership expires " +
-                    member.getExpire() + ", " + member.getLocation());
+            System.out.println(member.getFname() + " " + member.getLname() + " DOB: "
+                    + member.getDob() + ", " + "Membership expires "
+                    + member.getExpire() + ", " + member.getLocation());
         else if (!db.add(member))
             System.out.println(member.getFname() + " " + member.getLname() + " is already in the database.");
     }
@@ -295,7 +302,7 @@ public class GymManager {
 
     /**
      * Checks given member information is valid, and then checks member in for desired fitness class if there are no
-     * time conflicts.
+     * time conflicts. Then checks member in.
      */
     private void checkIn() {
         FitnessClass fitnessClass = getFitnessClass();
@@ -356,6 +363,10 @@ public class GymManager {
                     fitnessClass + "\n");
     }
 
+    /**
+     * Checks given member information is valid to be able to check in guest, and then checks that member location
+     * is the same as the class location to allow them to go to that class. Then checks member in.
+     */
     private void checkInGuests() {
         FitnessClass fitnessClass = getFitnessClass();
         if (fitnessClass == null) return;
@@ -393,7 +404,7 @@ public class GymManager {
 
         if (((Family) memberFromDb).hasGuestPass()) {
             fitnessClass.checkInGuest(memberFromDb);
-            ((Family) memberFromDb).decrementGuessPass();
+            ((Family) memberFromDb).decrementGuestPass();
             System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " (guest) checked in " +
                     fitnessClass + "\n");
         } else {
@@ -436,6 +447,10 @@ public class GymManager {
             System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " done with the class.");
     }
 
+    /**
+     * Checks if given member sponsoring guest is valid and that guest checked into appropriate fitness class.
+     * Then drops them from that fitness class.
+     */
     private void checkoutGuests() {
         FitnessClass fitnessClass = getFitnessClass();
         if (fitnessClass == null) return;
@@ -466,21 +481,8 @@ public class GymManager {
 
         if (fitnessClass.checkoutGuest(memberFromDb)) {
             System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " Guest done with the class.");
-            ((Family) memberFromDb).incrementGuessPass();
+            ((Family) memberFromDb).incrementGuestPass();
         }
-    }
-
-    /**
-     * Checks that expiration date is a valid calendar date.
-     * @param member member to get expiration date from.
-     * @return true if the expiration is a valid calendar date, false otherwise.
-     */
-    private boolean validExpirationDate(Member member) {
-        if (!member.getExpire().isValid()) {
-            System.out.println("Expiration date " + member.getExpire() + ": invalid calendar date!");
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -524,6 +526,11 @@ public class GymManager {
         return true;
     }
 
+    /**
+     * Continues reading from input to get information of fitness class to be retrieved. Then performs checks to ensure
+     * that class is valid.
+     * @return FitnessClass if the class exists, null otherwise.
+     */
     private FitnessClass getFitnessClass() {
         String fitnessClassName = st.nextToken();
         if (!classNameExists(fitnessClassName)) {
@@ -552,6 +559,11 @@ public class GymManager {
         return fitnessClass;
     }
 
+    /**
+     * Checks given instructor against instructors teaching classes to see if they exist.
+     * @param instructor String of instructor to check.
+     * @return true if instructor exists, false otherwise.
+     */
     private boolean instructorExists(String instructor) {
         for (FitnessClass fc: classes.getClasses())
             if ((fc != null) && (fc.getInstructorName().equalsIgnoreCase(instructor)))
@@ -559,6 +571,11 @@ public class GymManager {
         return false;
     }
 
+    /**
+     * Checks given class name against names of classing being offered to see if they exist.
+     * @param className String of class name to check.
+     * @return true if class name exists, false otherwise.
+     */
     private boolean classNameExists(String className) {
         for (FitnessClass fc: classes.getClasses())
             if ((fc != null) && (fc.getClassName().equalsIgnoreCase(className)))

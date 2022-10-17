@@ -92,6 +92,11 @@ public class FitnessClass {
         return true;
     }
 
+    /**
+     * Checks guest in for fitness class.
+     * @param member member's account that guest is using to check into class.
+     * @return true if member's guest gets checked in.
+     */
     public boolean checkInGuest(Member member) {
         guests[guestSize++] = member;
         return true;
@@ -116,6 +121,11 @@ public class FitnessClass {
         return true;
     }
 
+    /**
+     * Drops member's guest from fitness class.
+     * @param member member's account that guest is using to drop from class.
+     * @return true if member's guest drops class.
+     */
     public boolean checkoutGuest(Member member) {
         int guestIndex = getGuestIndex(member);
         if (guestIndex == Constants.NOT_FOUND) return false;
@@ -142,6 +152,11 @@ public class FitnessClass {
         return false;
     }
 
+    /**
+     * Checks if guest is checked into class already.
+     * @param member member's account to check against guest list.
+     * @return true if guest is already checked in, false otherwise.
+     */
     public boolean guestCheckedIn(Member member) {
         if (guestSize != 0)
             for (Member m : guests)
@@ -161,6 +176,11 @@ public class FitnessClass {
         return -1;
     }
 
+    /**
+     * Retrieves index of guest registered for fitness class.
+     * @param member member's account used to search guest registration list.
+     * @return index of guest registered for fitness class, -1 otherwise.
+     */
     private int getGuestIndex(Member member) {
         for (int i = 0; i <= guestSize; i++)
             if (guests[i] != null && member.equals(guests[i]))
@@ -168,34 +188,66 @@ public class FitnessClass {
         return -1;
     }
 
+    /**
+     * Gets name of instructor.
+     * @return name of instructor.
+     */
     public String getInstructorName() {
         return instructorName;
     }
 
+    /**
+     * Sets name of instructor.
+     * @param instructorName name of instructor
+     */
     public void setInstructorName(String instructorName) {
         this.instructorName = instructorName;
     }
 
+    /**
+     * Gets the time of the class.
+     * @return time of the class.
+     */
     public Time getTime() {
         return time;
     }
 
+    /**
+     * Sets time of the class.
+     * @param time time of the class.
+     */
     public void setTime(Time time) {
         this.time = time;
     }
 
+    /**
+     * Gets the location of the class.
+     * @return location of the class.
+     */
     public Location getLocation() {
         return location;
     }
 
+    /**
+     * Sets the location of the class.
+     * @return location of the class.
+     */
     public void setLocation(Location location) {
         this.location = location;
     }
 
+    /**
+     * Gets the name of the class.
+     * @return name of the class.
+     */
     public String getClassName() {
         return className;
     }
 
+    /**
+     * Sets the name of the class.
+     * @return name of the class.
+     */
     public Member[] getParticipants() {
         return participants;
     }
@@ -211,6 +263,12 @@ public class FitnessClass {
                 zipCodeFormat.format(location.getZip()) + ", " + location.getCounty();
     }
 
+    /**
+     * Determines if a fitness class is equal to another fitness class.
+     * Class name, instructor name, and location are the same.
+     * @param obj FitnessClass to check if equal to another FitnessClass.
+     * @return true if FitnessClass is equal to other FitnessClass, false otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (className.equalsIgnoreCase(((FitnessClass) obj).getClassName())
@@ -221,7 +279,7 @@ public class FitnessClass {
 
     /**
      * Creates a string containing the name of fitness class, name of instructor, time of class, and information
-     * for all members registered for each class.
+     * for all members and guests registered for each class.
      * @return string containing all class data
      */
     @Override
