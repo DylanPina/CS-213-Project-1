@@ -30,6 +30,18 @@ public class Family extends Member implements Comparable<Member> {
         this.guestPasses = guestPasses;
     }
 
+    public void incrementGuessPass() {
+        guestPasses++;
+    }
+
+    public void decrementGuessPass() {
+        guestPasses--;
+    }
+
+    public boolean hasGuestPass() {
+        return guestPasses != 0;
+    }
+
     @Override
     public double membershipFee() {
         return initFee + quarterlyFee;

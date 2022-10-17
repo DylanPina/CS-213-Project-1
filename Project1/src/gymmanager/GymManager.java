@@ -1,6 +1,5 @@
 package gymmanager;
 import java.io.FileNotFoundException;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.io.File;
@@ -13,9 +12,6 @@ public class GymManager {
     private boolean oldMemberFlag = false;
     MemberDatabase db;
     ClassSchedule classes;
-//    FitnessClass pilates;
-//    FitnessClass spinning;
-//    FitnessClass cardio;
 
     /**
      * Creates a new MemberDatabase object, initializes fitness classes, and takes input from user until 'Q' is read.
@@ -75,19 +71,20 @@ public class GymManager {
                 db.printWithFees();
                 break;
             case "S":
+                System.out.println("-Fitness classes-");
                 printFitnessClasses();
                 break;
             case "C":
                 checkIn();
                 break;
             case "CG":
-                //TODO: add family guest check in for fitness class
+                checkInGuests();
                 break;
             case "D":
                 checkout();
                 break;
             case "DG":
-                //TODO: add family guest check out, keep track of remaining guest passes
+                checkoutGuests();
                 break;
             case "Q":
                 quitProgram();
@@ -167,6 +164,7 @@ public class GymManager {
                     break;
                 }
             }
+            System.out.println("\n-Fitness classes loaded-");
             printFitnessClasses();
         } catch (FileNotFoundException e) {
             System.out.println("Error.");
@@ -288,7 +286,6 @@ public class GymManager {
             System.out.println("Fitness class schedule is empty.");
             return;
         }
-        System.out.println("\n-Fitness classes loaded-");
         System.out.print(classes.printClassSchedule());
         System.out.println("-end of class list-\n");
     }
@@ -352,7 +349,53 @@ public class GymManager {
         }
 
         if (fitnessClass.checkIn(memberFromDb))
-            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " checked in " + fitnessClass);
+            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " checked in " +
+                    fitnessClass + "\n");
+    }
+
+    private void checkInGuests() {
+        FitnessClass fitnessClass = getFitnessClass();
+        if (fitnessClass == null) return;
+
+        Member guestSponsor = new Member();
+        guestSponsor.setFname(st.nextToken());
+        guestSponsor.setLname(st.nextToken());
+        guestSponsor.setDob(new Date(st.nextToken()));
+
+        if (!guestSponsor.getDob().isValid()) {
+            System.out.println(guestSponsor.getDob() + ": invalid date of birth!");
+            return;
+        }
+
+        if (!db.memberExists(guestSponsor)) {
+            System.out.println(guestSponsor.getFname() + " " + guestSponsor.getLname() + " " + guestSponsor.getDob() +
+                    " is not in the database.");
+            return;
+        }
+
+        Member memberFromDb = db.getMemberFromDb(guestSponsor);
+        if (expirationDateExpired(memberFromDb)) return;
+
+        if (!(memberFromDb instanceof Family)) {
+            System.out.println("Standard membership - guest check-in is not allowed.");
+            return;
+        }
+
+        if (!(memberFromDb.getLocation().equals(fitnessClass.getLocation()))) {
+            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " Guest checking in "
+                    + fitnessClass.getLocation().name() + ", " + fitnessClass.getLocation().getZip() + ", "
+                    + fitnessClass.getLocation().getCounty() + " - guest location restriction.");
+            return;
+        }
+
+        if (((Family) memberFromDb).hasGuestPass()) {
+            fitnessClass.checkInGuest(memberFromDb);
+            ((Family) memberFromDb).decrementGuessPass();
+            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " (guest) checked in " +
+                    fitnessClass + "\n");
+        } else {
+            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " ran out of guest pass.");
+        }
     }
 
     /**
@@ -388,6 +431,40 @@ public class GymManager {
 
         if (fitnessClass.checkout(memberFromDb))
             System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " done with the class.");
+    }
+
+    private void checkoutGuests() {
+        FitnessClass fitnessClass = getFitnessClass();
+        if (fitnessClass == null) return;
+
+        Member guestSponsor = new Member();
+        guestSponsor.setFname(st.nextToken());
+        guestSponsor.setLname(st.nextToken());
+        guestSponsor.setDob(new Date(st.nextToken()));
+
+        if (!guestSponsor.getDob().isValid()) {
+            System.out.println(guestSponsor.getDob() + ": invalid date of birth!");
+            return;
+        }
+
+        if (!db.memberExists(guestSponsor)) {
+            System.out.println(guestSponsor.getFname() + " " + guestSponsor.getLname() + " " + guestSponsor.getDob() +
+                    " is not in the database.");
+            return;
+        }
+
+        Member memberFromDb = db.getMemberFromDb(guestSponsor);
+        if (expirationDateExpired(memberFromDb)) return;
+
+        if (!fitnessClass.guestCheckedIn(memberFromDb)) {
+            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " Guest did not check in.");
+            return;
+        }
+
+        if (fitnessClass.checkoutGuest(memberFromDb)) {
+            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " Guest done with the class.");
+            ((Family) memberFromDb).incrementGuessPass();
+        }
     }
 
     /**

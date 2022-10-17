@@ -131,7 +131,7 @@ public class MemberDatabase {
         System.out.println("\n-list of members with membership fees-");
         for (Member m : mlist)
             if (m != null) System.out.println(m + ", Membership fee: $" + m.membershipFee());
-        System.out.println("-end of list-");
+        System.out.println("-end of list-\n");
     }
 
     /**

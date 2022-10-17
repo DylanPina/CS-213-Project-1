@@ -10,7 +10,9 @@ public class FitnessClass {
     private Time time;
     private Location location;
     private Member[] participants;
-    private int classSize;
+    private Member[] guests;
+    private int participantSize;
+    private int guestSize;
 
     /**
      * Default constructor for FitnessClass, fills with null values.
@@ -21,7 +23,9 @@ public class FitnessClass {
         this.time = null;
         this.location = null;
         this.participants = new Member[100];
-        this.classSize = 0;
+        this.guests = new Member[100];
+        this.participantSize = 0;
+        this.guestSize = 0;
     }
 
     /**
@@ -34,7 +38,9 @@ public class FitnessClass {
         this.time = null;
         this.location = null;
         this.participants = new Member[100];
-        this.classSize = 0;
+        this.guests = new Member[100];
+        this.participantSize = 0;
+        this.guestSize = 0;
     }
 
     /**
@@ -49,7 +55,10 @@ public class FitnessClass {
         this.time = null;
         this.location = location;
         this.participants = new Member[100];
-        this.classSize = 0;
+        this.guests = new Member[100];
+        this.participantSize = 0;
+        this.guestSize = 0;
+
     }
 
     /**
@@ -65,7 +74,9 @@ public class FitnessClass {
         this.time = time;
         this.location = location;
         this.participants = new Member[100];
-        this.classSize = 0;
+        this.guests = new Member[100];
+        this.participantSize = 0;
+        this.guestSize = 0;
     }
 
     /**
@@ -74,7 +85,12 @@ public class FitnessClass {
      * @return true if member gets checked in.
      */
     public boolean checkIn(Member member) {
-        participants[classSize++] = member;
+        participants[participantSize++] = member;
+        return true;
+    }
+
+    public boolean checkInGuest(Member member) {
+        guests[guestSize++] = member;
         return true;
     }
 
@@ -85,13 +101,28 @@ public class FitnessClass {
      */
     public boolean checkout(Member member) {
         int participantIndex = getParticipantIndex(member);
-        if (participantIndex == -1) return false;
+        if (participantIndex == Constants.NOT_FOUND) return false;
 
-        Member[] newList = new Member[classSize--];
-        for (int i = 0; i < classSize; i++)
-            if (i == participantIndex) newList[i] = participants[i + 1];
+        Member[] newList = new Member[participants.length];
+        participantSize--;
+        for (int i = 0; i < participantSize; i++)
+            if (i == participantIndex) newList[i] = participants[i++ + 1];
             else newList[i] = participants[i];
         participants = newList;
+
+        return true;
+    }
+
+    public boolean checkoutGuest(Member member) {
+        int guestIndex = getGuestIndex(member);
+        if (guestIndex == Constants.NOT_FOUND) return false;
+
+        Member[] newList = new Member[guests.length];
+        guestSize--;
+        for (int i = 0; i < guestSize; i++)
+            if (i == guestIndex) newList[i] = guests[i++ + 1];
+            else newList[i] = guests[i];
+        guests = newList;
 
         return true;
     }
@@ -102,8 +133,15 @@ public class FitnessClass {
      * @return true if member is already checked in, false otherwise.
      */
     public boolean participantCheckedIn(Member member) {
-        if (classSize != 0)
+        if (participantSize != 0)
             for (Member m : participants)
+                if (m != null && m.equals(member)) return true;
+        return false;
+    }
+
+    public boolean guestCheckedIn(Member member) {
+        if (guestSize != 0)
+            for (Member m : guests)
                 if (m != null && m.equals(member)) return true;
         return false;
     }
@@ -114,8 +152,15 @@ public class FitnessClass {
      * @return index of member registered for fitness class, -1 otherwise.
      */
     private int getParticipantIndex(Member member) {
-        for (int i = 0; i <= classSize; i++)
+        for (int i = 0; i <= participantSize; i++)
             if (participants[i] != null && member.equals(participants[i]))
+                return i;
+        return -1;
+    }
+
+    private int getGuestIndex(Member member) {
+        for (int i = 0; i <= guestSize; i++)
+            if (guests[i] != null && member.equals(guests[i]))
                 return i;
         return -1;
     }
@@ -152,14 +197,6 @@ public class FitnessClass {
         return participants;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (className.equalsIgnoreCase(((FitnessClass) obj).getClassName())
-                && (instructorName.equalsIgnoreCase(((FitnessClass) obj).getInstructorName())
-                && (location.equals(((FitnessClass) obj).getLocation())))) return true;
-        return false;
-    }
-
     /**
      * Creates string including the class name, instructor name, time, and location.
      * Does not contain list of participants.
@@ -168,6 +205,14 @@ public class FitnessClass {
     public String printNoParticipants() {
         return className + " - " + instructorName.toUpperCase() + ", " + time  + ", " + location.name() + ", " +
                 location.getZip() + ", " + location.getCounty();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (className.equalsIgnoreCase(((FitnessClass) obj).getClassName())
+                && (instructorName.equalsIgnoreCase(((FitnessClass) obj).getInstructorName())
+                && (location.equals(((FitnessClass) obj).getLocation())))) return true;
+        return false;
     }
 
     /**
@@ -179,11 +224,30 @@ public class FitnessClass {
     public String toString() {
         StringBuilder classStr = new StringBuilder();
         classStr.append(className + " - " + instructorName.toUpperCase() + ", " + time  + ", " + location.name());
-        if (classSize != 0) {
-            classStr.append("\n- Participants -\n");
-            for (Member m : participants)
-                if (m != null) classStr.append("   " + m + "\n");
+
+        boolean hasParticipants = participantSize != 0;
+        boolean hasGuests = guestSize != 0;
+
+        if (hasParticipants || hasGuests) classStr.append("\n");
+        if (hasParticipants) {
+            classStr.append("- Participants -\n");
+            for (int i = 0; i < participantSize; i++)
+                if (participants[i] != null) {
+                    classStr.append("   " + participants[i]);
+                    if (participants[i + 1] != null) classStr.append("\n");
+                }
         }
+
+        if (hasParticipants && hasGuests) classStr.append("\n");
+        if (hasGuests) {
+            classStr.append("- Guests -\n");
+            for (int i = 0; i < guestSize; i++)
+                if (guests[i] != null) {
+                    classStr.append("   " + guests[i]);
+                    if (guests[i + 1] != null) classStr.append("\n");
+                }
+        }
+
         return classStr.toString();
     }
 }
