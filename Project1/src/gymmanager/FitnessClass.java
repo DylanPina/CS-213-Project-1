@@ -85,7 +85,7 @@ public class FitnessClass {
     /**
      * Checks member in for fitness class.
      * @param member member checking into class.
-     * @return String verifying successful check-in or appropriate error message.
+     * @return String verifying successful member check-in or appropriate error message.
      */
     public String checkIn(Member member) {
         if (!member.getDob().isValid())
@@ -110,7 +110,7 @@ public class FitnessClass {
     /**
      * Checks guest in for fitness class.
      * @param member member's account that guest is using to check into class.
-     * @return String verifying successful check-in or appropriate error message.
+     * @return String verifying successful guest check-in or appropriate error message.
      */
     public String checkInGuest(Member member) {
         if (!member.getDob().isValid())
@@ -139,7 +139,7 @@ public class FitnessClass {
     /**
      * Drops member from fitness class.
      * @param member member dropping from class.
-     * @return String verifying successful checkout or appropriate error message.
+     * @return String verifying successful member checkout or appropriate error message.
      */
     public String checkout(Member member) {
         if (!member.getDob().isValid())
@@ -165,11 +165,19 @@ public class FitnessClass {
     /**
      * Drops member's guest from fitness class.
      * @param member member's account that guest is using to drop from class.
-     * @return true if member's guest drops class.
+     * @return String verifying successful guest checkout or appropriate error message.
      */
-    public boolean checkoutGuest(Member member) {
+    public String checkoutGuest(Member member) {
+        if (!member.getDob().isValid())
+            return "DOB " + member.getDob() + ": invalid calendar date!";
+
+        if (member.getExpire().isExpired())
+            return member.getFname() + " " + member.getLname() + " " + member.getDob() + " membership expired.";
+
+        if (!guestCheckedIn(member))
+            return member.getFname() + " " + member.getLname() + " Guest did not check in.";
+
         int guestIndex = getGuestIndex(member);
-        if (guestIndex == Constants.NOT_FOUND) return false;
 
         Member[] newList = new Member[guests.length];
         guestSize--;
@@ -178,7 +186,8 @@ public class FitnessClass {
             else newList[i] = guests[i];
         guests = newList;
 
-        return true;
+        ((Family) member).incrementGuestPass();
+        return member.getFname() + " " + member.getLname() + " Guest done with the class.";
     }
 
     /**

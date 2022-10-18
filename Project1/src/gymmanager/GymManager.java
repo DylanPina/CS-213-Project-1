@@ -1,5 +1,6 @@
 package gymmanager;
 import java.io.FileNotFoundException;
+import java.sql.SQLOutput;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.io.File;
@@ -408,17 +409,7 @@ public class GymManager {
         }
 
         Member memberFromDb = db.getMemberFromDb(guestSponsor);
-        if (expirationDateExpired(memberFromDb)) return;
-
-        if (!fitnessClass.guestCheckedIn(memberFromDb)) {
-            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " Guest did not check in.");
-            return;
-        }
-
-        if (fitnessClass.checkoutGuest(memberFromDb)) {
-            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " Guest done with the class.");
-            ((Family) memberFromDb).incrementGuestPass();
-        }
+        System.out.println(fitnessClass.checkoutGuest(memberFromDb));
     }
 
     /**
