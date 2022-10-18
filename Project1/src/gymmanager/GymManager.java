@@ -380,15 +380,7 @@ public class GymManager {
         }
 
         Member memberFromDb = db.getMemberFromDb(memberInfo);
-        if (expirationDateExpired(memberFromDb)) return;
-
-        if (!fitnessClass.participantCheckedIn(memberFromDb)) {
-            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " did not check in.");
-            return;
-        }
-
-        if (fitnessClass.checkout(memberFromDb))
-            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " done with the class.");
+        System.out.println(fitnessClass.checkout(memberFromDb));
     }
 
     /**

@@ -139,12 +139,19 @@ public class FitnessClass {
     /**
      * Drops member from fitness class.
      * @param member member dropping from class.
-     * @return true if member drops class.
+     * @return String verifying successful checkout or appropriate error message.
      */
-    public boolean checkout(Member member) {
-        int participantIndex = getParticipantIndex(member);
-        if (participantIndex == Constants.NOT_FOUND) return false;
+    public String checkout(Member member) {
+        if (!member.getDob().isValid())
+            return "DOB " + member.getDob() + ": invalid calendar date!";
 
+        if (!participantCheckedIn(member))
+            return member.getFname() + " " + member.getLname() + " did not check in.";
+
+        if (member.getExpire().isExpired())
+            return member.getFname() + " " + member.getLname() + " " + member.getDob() + " membership expired.";
+
+        int participantIndex = getParticipantIndex(member);
         Member[] newList = new Member[participants.length];
         participantSize--;
         for (int i = 0; i < participantSize; i++)
@@ -152,7 +159,7 @@ public class FitnessClass {
             else newList[i] = participants[i];
         participants = newList;
 
-        return true;
+        return member.getFname() + " " + member.getLname() + " done with the class.";
     }
 
     /**
