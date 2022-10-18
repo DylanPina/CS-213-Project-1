@@ -1,6 +1,5 @@
 package gymmanager;
 
-import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 
 /**
@@ -89,7 +88,7 @@ public class FitnessClass {
      */
     public String checkIn(Member member) {
         if (!member.getDob().isValid())
-            return "DOB: " + member.getDob() + ": invalid calendar date!";
+            return "DOB: " + member.getDob() + " invalid calendar date!";
 
         if (member.getExpire().isExpired())
             return member.getFname() + " " + member.getLname() + " " + member.getDob() + " membership expired.";
