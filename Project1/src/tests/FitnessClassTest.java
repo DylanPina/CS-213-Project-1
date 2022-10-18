@@ -386,6 +386,7 @@ class FitnessClassTest {
         Date today = new Date();
         member.setExpire(today.addThreeMonths());
         String expectedResult =  member.getFname() + " " + member.getLname() + " Guest done with the class.";
+        fitnessClass.checkInGuest(member);
         String result = fitnessClass.checkoutGuest(member);
         assertEquals(expectedResult, result);
     }
@@ -397,6 +398,7 @@ class FitnessClassTest {
         Date today = new Date();
         member.setExpire(today.addOneYear());
         String expectedResult =  member.getFname() + " " + member.getLname() + " Guest done with the class.";
+        fitnessClass.checkInGuest(member);
         String result = fitnessClass.checkoutGuest(member);
         assertEquals(expectedResult, result);
     }
