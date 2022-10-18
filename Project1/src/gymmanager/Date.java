@@ -75,10 +75,6 @@ public class Date implements Comparable<Date> {
         this.month = month;
     }
 
-    public void setDay(int day) {
-        this.day = day;
-    }
-
     /**
      * Determines if given year is a leap year.
      * @return true if it is a leap year, false otherwise.
@@ -168,22 +164,6 @@ public class Date implements Comparable<Date> {
                 if (currDay >= day)
                     return true;
         return false;
-    }
-
-    /**
-     * Determines if date of birth is before the date of today, and valid.
-     * @return true if date given is before today's date, false otherwise.
-     */
-    public boolean isValidDob() {
-        Date today = new Date();
-        if (today.getYear() < year) return false;
-        else if (today.getYear() == year)
-            if (today.getMonth() < month)
-                return false;
-            else if (today.getMonth() == month)
-                if (today.getDay() < day)
-                    return false;
-        return true;
     }
 
     /**

@@ -18,20 +18,6 @@ public class FitnessClass {
     private int guestSize;
 
     /**
-     * Default constructor for FitnessClass, fills with null values.
-     */
-    public FitnessClass() {
-        this.className = null;
-        this.instructorName = null;
-        this.time = null;
-        this.location = null;
-        this.participants = new Member[100];
-        this.guests = new Member[100];
-        this.participantSize = 0;
-        this.guestSize = 0;
-    }
-
-    /**
      * Creates new FitnessClass object with className value.
      * @param className name of fitness class.
      */
@@ -56,24 +42,6 @@ public class FitnessClass {
         this.className = className;
         this.instructorName = instructorName;
         this.time = null;
-        this.location = location;
-        this.participants = new Member[100];
-        this.guests = new Member[100];
-        this.participantSize = 0;
-        this.guestSize = 0;
-    }
-
-    /**
-     * Creates new FitnessClass object with given values.
-     * @param className name of fitness class.
-     * @param instructorName name of instructor teaching fitness class.
-     * @param time time of the fitness class.
-     * @param location location of the fitness class.
-     */
-    public FitnessClass(String className, String instructorName, Time time, Location location) {
-        this.className = className;
-        this.instructorName = instructorName;
-        this.time = time;
         this.location = location;
         this.participants = new Member[100];
         this.guests = new Member[100];
@@ -291,14 +259,6 @@ public class FitnessClass {
      */
     public String getClassName() {
         return className;
-    }
-
-    /**
-     * Sets the name of the class.
-     * @return name of the class.
-     */
-    public Member[] getParticipants() {
-        return participants;
     }
 
     /**

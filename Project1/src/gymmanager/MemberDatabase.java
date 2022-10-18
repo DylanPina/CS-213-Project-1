@@ -54,20 +54,6 @@ public class MemberDatabase {
     }
 
     /**
-     * Determines if date of birth is before today's date.
-     * @param member member to get date of birth to check.
-     * @return true if date of birth is valid, false otherwise.
-     */
-    public boolean validDob(Member member) {
-        Date today = new Date();
-        if ((member.getDob().compareTo(today) >= 1) || (member.getDob().compareTo(today) == 0)) {
-            System.out.println("DOB " + member.getDob() + ": cannot be today or a future date!");
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * Adds member to database.
      * @param member member to be added to database.
      * @return true if member was added, false otherwise.

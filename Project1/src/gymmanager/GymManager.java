@@ -122,6 +122,30 @@ public class GymManager {
     }
 
     /**
+     * Determines the fitness class given the name of a fitness class.
+     * @param className String containing the name of class to find.
+     * @return FitnessClass object if class is found, null otherwise.
+     */
+    private FitnessClass determineClass(String className) {
+        FitnessClass fitnessClass;
+        switch (className) {
+            case "PILATES":
+                fitnessClass = new FitnessClass("PILATES");
+                break;
+            case "SPINNING":
+                fitnessClass = new FitnessClass("SPINNING");
+                break;
+            case "CARDIO":
+                fitnessClass = new FitnessClass("CARDIO");
+                break;
+            default:
+                System.out.println(className + ": invalid fitness class!");
+                return null;
+        }
+        return fitnessClass;
+    }
+
+    /**
      * Initializes fitness classes: Pilates, Spinning, and Cardio by reading class data from text
      * file "classSchedule.txt".
      */
@@ -136,21 +160,8 @@ public class GymManager {
                     String instructor;
                     Time time;
                     Location location;
-                    FitnessClass fitnessClass;
-                    switch (line[i].toUpperCase()) {
-                        case "PILATES":
-                            fitnessClass = new FitnessClass("PILATES");
-                            break;
-                        case "SPINNING":
-                            fitnessClass = new FitnessClass("SPINNING");
-                            break;
-                        case "CARDIO":
-                            fitnessClass = new FitnessClass("CARDIO");
-                            break;
-                        default:
-                            System.out.println(line[i] + ": invalid fitness class!");
-                            return;
-                    }
+                    FitnessClass fitnessClass = determineClass(line[i].toUpperCase());
+                    if (fitnessClass == null) return;
                     instructor = line[i + 1];
                     time = findTime(line[i + 2]);
                     location = findLocation(line[i + 3]);
@@ -199,21 +210,8 @@ public class GymManager {
      * fields. Determines membership tier (member, family, premium). Finally, sets values to appropriate member fields.
      */
     private void addMember(char tier) {
-        Member member;
-        switch (tier) {
-            case 'M':
-                member = new Member();
-                break;
-            case 'F':
-                member = new Family();
-                break;
-            case 'P':
-                member = new Premium();
-                break;
-            default:
-                System.out.println(tier + ": invalid membership tier!");
-                return;
-        }
+        Member member = determineMembership(tier);
+        if (member == null) return;
         member.setFname(st.nextToken());
         member.setLname(st.nextToken());
         member.setDob(new Date(st.nextToken()));
@@ -247,6 +245,30 @@ public class GymManager {
                     + member.getExpire() + ", " + member.getLocation());
         else if (!db.add(member))
             System.out.println(member.getFname() + " " + member.getLname() + " is already in the database.");
+    }
+
+    /**
+     * Determines the membership tier given a character indicating the tier.
+     * M for member, F for family, and P for premium
+     * @param tier character indicating the level of membership.
+     * @return Member object if member tier is determined, null otherwise
+     */
+    private Member determineMembership(char tier) {
+        Member member;
+        switch (tier) {
+            case 'M':
+                member = new Member();
+                break;
+            case 'F':
+                member = new Family();
+                break;
+            case 'P':
+                member = new Premium();
+                break;
+            default:
+                return null;
+        }
+        return member;
     }
 
     /**
@@ -410,27 +432,6 @@ public class GymManager {
 
         Member memberFromDb = db.getMemberFromDb(guestSponsor);
         System.out.println(fitnessClass.checkoutGuest(memberFromDb));
-    }
-
-    /**
-     * Checks that member is in database, then checks if membership is active or expired.
-     * @param member member to get the expiration date from.
-     * @return true if the membership is expired, false otherwise.
-     */
-    private boolean expirationDateExpired(Member member) {
-        Date today = new Date();
-        if (!db.memberExists(member)) {
-            System.out.println(member.getFname() + " " + member.getLname() + " "
-                    + member.getDob() + " is not in the database.");
-            return false;
-        }
-        Date expDate = db.getMemberFromDb(member).getExpire();
-        if (expDate.compareTo(today) <= 0) {
-            System.out.println(member.getFname() + " " + member.getLname() + " "
-                    + member.getDob() + " membership expired.");
-            return true;
-        }
-        return false;
     }
 
     /**
