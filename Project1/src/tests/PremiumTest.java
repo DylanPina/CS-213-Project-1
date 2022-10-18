@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PremiumTest {
 
     @Test
-    void membershipFee() {
+    void test_membershipFee() {
         Premium premiumMember = new Premium();
         double expectedResult = 659.89;
         double result = premiumMember.membershipFee();

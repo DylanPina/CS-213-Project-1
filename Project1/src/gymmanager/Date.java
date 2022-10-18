@@ -187,6 +187,17 @@ public class Date implements Comparable<Date> {
     }
 
     /**
+     * Determines if date of birth is before the date of today, and valid.
+     * @return true if date given is before today's date, false otherwise.
+     */
+    public boolean isExpired() {
+        Date today = new Date();
+        if (this.compareTo(today) <= 0)
+            return true;
+        return false;
+    }
+
+    /**
      * Modifies date to be three months ahead of current date.
      * @return date object with date three months from today's date.
      */

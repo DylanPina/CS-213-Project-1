@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DateTest {
 
     @org.junit.jupiter.api.Test
-    void isValid() {
+    void test_isValid() {
         Date d1 = new Date("2/29/2018");
         assertFalse(d1.isValid());
 

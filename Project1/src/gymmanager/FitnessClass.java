@@ -1,5 +1,6 @@
 package gymmanager;
 
+import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 
 /**
@@ -61,7 +62,6 @@ public class FitnessClass {
         this.guests = new Member[100];
         this.participantSize = 0;
         this.guestSize = 0;
-
     }
 
     /**
@@ -85,11 +85,26 @@ public class FitnessClass {
     /**
      * Checks member in for fitness class.
      * @param member member checking into class.
-     * @return true if member gets checked in.
+     * @return String verifying successful check-in or appropriate error message.
      */
-    public boolean checkIn(Member member) {
+    public String checkIn(Member member) {
+        if (!member.getDob().isValid())
+            return "DOB: " + member.getDob() + ": invalid calendar date!";
+
+        if (member.getExpire().isExpired())
+            return member.getFname() + " " + member.getLname() + " " + member.getDob() + " membership expired.";
+
+        if (participantCheckedIn(member))
+            return member.getFname() + " " + member.getLname() + " already checked in.";
+
+        if (!(member instanceof Family))
+            if (!(member.getLocation().equals(getLocation())))
+                return member.getFname() + " " + member.getLname() + " checking in "
+                        + getLocation().name() + ", " + getLocation().getZip() + ", "
+                        + getLocation().getCounty() + " - standard membership location restriction.";
+
         participants[participantSize++] = member;
-        return true;
+        return member.getFname() + " " + member.getLname() + " checked in " + this + "\n";
     }
 
     /**

@@ -313,11 +313,6 @@ public class GymManager {
         memberInfo.setLname(st.nextToken());
         memberInfo.setDob(new Date(st.nextToken()));
 
-        if (!memberInfo.getDob().isValid()) {
-             System.out.println("DOB: " + memberInfo.getDob() + ": invalid calendar date!");
-             return;
-        }
-
         if (!db.memberExists(memberInfo)) {
             System.out.println(memberInfo.getFname() + " " + memberInfo.getLname() + " " + memberInfo.getDob() +
                     " is not in the database.");
@@ -325,42 +320,17 @@ public class GymManager {
         }
 
         Member memberFromDb = db.getMemberFromDb(memberInfo);
-        if (expirationDateExpired(memberFromDb)) return;
+        boolean timeConflict = false;
+        for (FitnessClass fc: classes.getClasses())
+            if ((fc != null) && (fc.participantCheckedIn(memberFromDb)))
+                if (fc.getTime().equals(fitnessClass.getTime()))
+                    timeConflict = true;
 
-        if (fitnessClass.participantCheckedIn(memberFromDb)) {
-            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " has already checked in.");
-            return;
-        }
-
-        // checks if member is standard member
-        // if true, checks if class is at registered location
-        if (!((memberFromDb instanceof Family) && (memberFromDb instanceof Premium))) {
-            if (!(memberFromDb.getLocation().equals(fitnessClass.getLocation()))) {
-                System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " checking in "
-                    + fitnessClass.getLocation().name() + ", " + fitnessClass.getLocation().getZip() + ", "
-                        + fitnessClass.getLocation().getCounty() + " - standard membership location restriction.");
-                return;
-            }
-        }
-
-        // iterates through ClassSchedule classes
-        // checks for time conflict in members checking into more than one class
-        for (FitnessClass classes: classes.getClasses()) {
-            if (classes != null) {
-                for (Member member: classes.getParticipants()) {
-                    if ((member != null) && (member.equals(memberFromDb))) {
-                        if (classes.getTime().equals(fitnessClass.getTime())) {
-                            System.out.println("Time conflict - " + fitnessClass.printNoParticipants());
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (fitnessClass.checkIn(memberFromDb))
-            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " checked in " +
-                    fitnessClass + "\n");
+        String response = fitnessClass.checkIn(memberFromDb);
+        if ((timeConflict && response.contains("already checked in.")) || !timeConflict)
+            System.out.println(response);
+        else
+            System.out.println("Time conflict - " + fitnessClass.printNoParticipants());
     }
 
     /**
