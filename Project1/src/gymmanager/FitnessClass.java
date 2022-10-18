@@ -110,11 +110,30 @@ public class FitnessClass {
     /**
      * Checks guest in for fitness class.
      * @param member member's account that guest is using to check into class.
-     * @return true if member's guest gets checked in.
+     * @return String verifying successful check-in or appropriate error message.
      */
-    public boolean checkInGuest(Member member) {
-        guests[guestSize++] = member;
-        return true;
+    public String checkInGuest(Member member) {
+        if (!member.getDob().isValid())
+            return "DOB: " + member.getDob() + " invalid calendar date!";
+
+        if (member.getExpire().isExpired())
+            return member.getFname() + " " + member.getLname() + " " + member.getDob() + " membership expired.";
+
+        if (!(member instanceof Family))
+            return "Standard membership - guest check-in is not allowed.";
+
+        if (!(member.getLocation().equals(getLocation())))
+            return member.getFname() + " " + member.getLname() + " Guest checking in "
+                    + getLocation().name() + ", " + getLocation().getZip() + ", "
+                    + getLocation().getCounty() + " - guest location restriction.";
+
+        if (((Family) member).hasGuestPass()) {
+            ((Family) member).decrementGuestPass();
+            guests[guestSize++] = member;
+            return member.getFname() + " " + member.getLname() + " (guest) checked in " + this + "\n";
+        } else {
+            return member.getFname() + " " + member.getLname() + " ran out of guest pass.";
+        }
     }
 
     /**

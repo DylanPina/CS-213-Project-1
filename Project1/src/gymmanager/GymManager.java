@@ -241,7 +241,7 @@ public class GymManager {
         if (!oldMemberFlag && memberAdded)
             System.out.println(member.getFname() + " " + member.getLname() + " added.");
         else if (oldMemberFlag && memberAdded)
-            System.out.println(member.getFname() + " " + member.getLname() + " DOB: "
+            System.out.println(member.getFname() + " " + member.getLname() + " DOB "
                     + member.getDob() + ", " + "Membership expires "
                     + member.getExpire() + ", " + member.getLocation());
         else if (!db.add(member))
@@ -346,11 +346,6 @@ public class GymManager {
         guestSponsor.setLname(st.nextToken());
         guestSponsor.setDob(new Date(st.nextToken()));
 
-        if (!guestSponsor.getDob().isValid()) {
-            System.out.println("DOB: " + guestSponsor.getDob() + ": invalid calendar date!");
-            return;
-        }
-
         if (!db.memberExists(guestSponsor)) {
             System.out.println(guestSponsor.getFname() + " " + guestSponsor.getLname() + " " + guestSponsor.getDob() +
                     " is not in the database.");
@@ -358,28 +353,7 @@ public class GymManager {
         }
 
         Member memberFromDb = db.getMemberFromDb(guestSponsor);
-        if (expirationDateExpired(memberFromDb)) return;
-
-        if (!(memberFromDb instanceof Family)) {
-            System.out.println("Standard membership - guest check-in is not allowed.");
-            return;
-        }
-
-        if (!(memberFromDb.getLocation().equals(fitnessClass.getLocation()))) {
-            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " Guest checking in "
-                    + fitnessClass.getLocation().name() + ", " + fitnessClass.getLocation().getZip() + ", "
-                    + fitnessClass.getLocation().getCounty() + " - guest location restriction.");
-            return;
-        }
-
-        if (((Family) memberFromDb).hasGuestPass()) {
-            fitnessClass.checkInGuest(memberFromDb);
-            ((Family) memberFromDb).decrementGuestPass();
-            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " (guest) checked in " +
-                    fitnessClass + "\n");
-        } else {
-            System.out.println(memberFromDb.getFname() + " " + memberFromDb.getLname() + " ran out of guest pass.");
-        }
+        System.out.println(fitnessClass.checkInGuest(memberFromDb));
     }
 
     /**
@@ -395,7 +369,7 @@ public class GymManager {
         memberInfo.setDob(new Date(st.nextToken()));
 
         if (!memberInfo.getDob().isValid()) {
-            System.out.println("DOB: " + memberInfo.getDob() + ": invalid calendar date!");
+            System.out.println("DOB " + memberInfo.getDob() + ": invalid calendar date!");
             return;
         }
 
@@ -431,7 +405,7 @@ public class GymManager {
         guestSponsor.setDob(new Date(st.nextToken()));
 
         if (!guestSponsor.getDob().isValid()) {
-            System.out.println("DOB: " + guestSponsor.getDob() + ": invalid calendar date!");
+            System.out.println("DOB: " + guestSponsor.getDob() + " invalid calendar date!");
             return;
         }
 
